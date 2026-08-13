@@ -2,7 +2,7 @@
 
 ## Website Product & Build Specification — Version 2.0
 
-**Domain:** longevitymarathon.run  
+**Domain:** marathonlongevity.run  
 **Status:** Build-ready specification  
 **Project window:** Four-month training period through the BYD Singapore Marathon 2026, plus an immediate post-race retrospective  
 **Target outcome:** Complete 42.2 km in 5:00  
