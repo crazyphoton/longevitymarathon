@@ -29,8 +29,11 @@ CREDS_FILE = DATA_DIR / "garmin_credentials.json"
 MFA_FILE = DATA_DIR / "garmin_mfa_code.txt"
 TOKEN_DIR = DATA_DIR / "garmin_tokens"
 
-CREDS_TIMEOUT_S = 30 * 60
-MFA_TIMEOUT_S = 10 * 60
+CREDS_TIMEOUT_S = int(os.environ.get("CREDS_TIMEOUT_S", 30 * 60))
+MFA_TIMEOUT_S = int(os.environ.get("MFA_TIMEOUT_S", 10 * 60))
+COOLDOWN_S = int(os.environ.get("COOLDOWN_S", 0))  # wait before first attempt (429 cool-off)
+RETRIES = int(os.environ.get("RETRIES", 3))
+RETRY_WAIT_S = int(os.environ.get("RETRY_WAIT_S", 60 * 60))
 POLL_S = 5
 
 
@@ -72,14 +75,32 @@ def main() -> None:
 
     print(f"Waiting for credentials file {CREDS_FILE} ...", flush=True)
     creds = json.loads(wait_for_file(CREDS_FILE, CREDS_TIMEOUT_S, "credentials"))
-    email, password = creds["email"], creds["password"]
-    print(f"Credentials received for {email}. Logging in to Garmin ...", flush=True)
+    email, password = creds["email"].strip(), creds["password"]
+    if "REAL-EMAIL" in email.upper() or email in ("your@email.com", ""):
+        shred(CREDS_FILE)
+        sys.exit(f"Credentials file still contains the placeholder email ({email!r}). "
+                 "Edit it with your real Garmin email and re-run.")
+    print(f"Credentials received for {email}.", flush=True)
+
+    if COOLDOWN_S:
+        print(f"Cooling down {COOLDOWN_S // 60} min before login (Garmin rate limit) ...", flush=True)
+        time.sleep(COOLDOWN_S)
 
     try:
-        client = Garmin(email, password, prompt_mfa=prompt_mfa)
-        TOKEN_DIR.mkdir(parents=True, exist_ok=True)
-        client.login(str(TOKEN_DIR))
-        tokens = json.loads(client.client.dumps())
+        tokens = None
+        for attempt in range(1, RETRIES + 1):
+            try:
+                print(f"Login attempt {attempt}/{RETRIES} ...", flush=True)
+                client = Garmin(email, password, prompt_mfa=prompt_mfa)
+                TOKEN_DIR.mkdir(parents=True, exist_ok=True)
+                client.login(str(TOKEN_DIR))
+                tokens = json.loads(client.client.dumps())
+                break
+            except Exception as e:
+                if attempt == RETRIES:
+                    raise
+                print(f"Attempt {attempt} failed ({e}). Retrying in {RETRY_WAIT_S // 60} min ...", flush=True)
+                time.sleep(RETRY_WAIT_S)
     finally:
         shred(CREDS_FILE)
         shred(MFA_FILE)

@@ -51,6 +51,10 @@ def upsert(table: str, conflict: str, rows: list[dict]) -> None:
         )
 
 
+def as_int(v) -> int | None:
+    return int(round(v)) if v is not None else None
+
+
 def load_client() -> Garmin:
     rows = rest("GET", "garmin_token?select=tokens").json()
     if not rows:
@@ -83,11 +87,11 @@ def activity_rows(client: Garmin, start: dt.date, end: dt.date) -> list[dict]:
                 "name": a.get("activityName"),
                 "distance_m": a.get("distance"),
                 "duration_s": a.get("duration"),
-                "avg_hr": a.get("averageHR"),
-                "max_hr": a.get("maxHR"),
+                "avg_hr": as_int(a.get("averageHR")),
+                "max_hr": as_int(a.get("maxHR")),
                 "avg_pace_s_per_km": round(1000 / avg_speed, 1) if avg_speed else None,
                 "elevation_gain_m": a.get("elevationGain"),
-                "calories": a.get("calories"),
+                "calories": as_int(a.get("calories")),
                 "vo2max_estimate": a.get("vO2MaxValue"),
                 "raw": a,
                 "updated_at": now,
@@ -132,12 +136,12 @@ def daily_rows(client: Garmin, days: list[dt.date]) -> list[dict]:
         rows.append(
             {
                 "day": iso,
-                "resting_hr": (stats or {}).get("restingHeartRate"),
-                "sleep_seconds": sleep_dto.get("sleepTimeSeconds"),
-                "sleep_score": (sleep_scores.get("overall") or {}).get("value"),
-                "steps": (stats or {}).get("totalSteps"),
-                "body_battery_high": (stats or {}).get("bodyBatteryHighestValue"),
-                "body_battery_low": (stats or {}).get("bodyBatteryLowestValue"),
+                "resting_hr": as_int((stats or {}).get("restingHeartRate")),
+                "sleep_seconds": as_int(sleep_dto.get("sleepTimeSeconds")),
+                "sleep_score": as_int((sleep_scores.get("overall") or {}).get("value")),
+                "steps": as_int((stats or {}).get("totalSteps")),
+                "body_battery_high": as_int((stats or {}).get("bodyBatteryHighestValue")),
+                "body_battery_low": as_int((stats or {}).get("bodyBatteryLowestValue")),
                 "vo2max_run": vo2,
                 "raw": raw,
                 "updated_at": now,
