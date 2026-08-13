@@ -71,6 +71,8 @@ Flag for contextual review: "This isn't just X; it's Y." / "It's not about X. It
 
 Also flag: unsupported superlatives and causal verbs (*best, proven, transformed, caused, fixed, prevented, reversed*); a paragraph restating its opening sentence without adding anything; passages that could appear unchanged on any other fitness/wellness site.
 
+**Project-specific ban: "honest" and "genuine," in any form (honest, honestly, honesty, genuine, genuinely), are banned outright on this site.** Unlike the general anti-slop list above, this isn't scoped to promotional or unearned usage — it's banned in every context, including ones that would otherwise be legitimate (e.g. "an honest Awaiting Data state," "genuinely unresolved"). The site became reliant on these words as a crutch for signaling trustworthiness; the underlying honesty should be demonstrated by what the sentence actually says (what's missing, what's uncertain, what hasn't happened yet), not asserted with this label. When a sentence leans on one of these words, rewrite around it — cut it if the surrounding sentence already carries the meaning, or find a concrete alternative if not. Don't launder the ban by defaulting to a single substitute (e.g. "truthful," "real") everywhere; that just relocates the crutch.
+
 Headlines should feel inviting and chapter-like — a real question, moment, decision, or finding — not salesy hero copy. The approved Home headline and other canonical copy live in the website spec §18; don't invent competing headlines here.
 
 ## 7. Review output
@@ -106,7 +108,7 @@ Apply the earned-contrast rule to every "not X, but Y" or similar construction: 
 
 Apply the functional-repetition rule: each repeated idea must do identifiable new work, or cut/combine it.
 
-Flag banned and watch-list phrases, unsupported superlatives/causal verbs, and passages that could appear on any other wellness site. Check causality phrasing (coincided with / may have contributed to, not "after" implying "because").
+Flag banned and watch-list phrases, unsupported superlatives/causal verbs, and passages that could appear on any other wellness site. Check causality phrasing (coincided with / may have contributed to, not "after" implying "because"). "Honest," "honestly," "honesty," "genuine," and "genuinely" are banned outright in every context on this site (not just promotional use) — flag and reword any instance found, per §6.
 
 Return: (1) PASS/REVISE/REJECT; (2) one-sentence assessment; (3) 1–5 scores across purpose, specificity, trust, voice, rhythm, restraint, contrast, repetition, accessibility, page fit; (4) issues ordered S0→S3; (5) earned-contrast audit; (6) repetition audit (KEEP/COMBINE/CUT); (7) concrete rewrites; (8) what to preserve.
 ```

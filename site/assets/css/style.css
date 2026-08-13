@@ -285,7 +285,7 @@ main { display: block; }
   padding-top: 0.6rem;
 }
 .stat__label { font-size: 0.78rem; color: var(--color-ink-faint); text-transform: uppercase; letter-spacing: 0.04em; }
-/* Sans by default — mono is notation for genuine data (a measurement, count, or date), added
+/* Sans by default — mono is notation for actual data (a measurement, count, or date), added
    via the shared .mono utility class only where that's true. See design.md §4. */
 .stat__value { font-family: var(--font-sans); font-weight: 700; font-size: 1.5rem; color: var(--color-ink); display: block; margin-top: 0.2rem; }
 .stat__value.mono { font-weight: 400; }
