@@ -1185,9 +1185,9 @@ These questions do not block the product definition, but should be resolved befo
 
 ### Must resolve before public launch
 
-1. Exact BYD Singapore Marathon 2026 race date, official event naming, and any trademark/brand-use constraints.
+1. ~~Exact BYD Singapore Marathon 2026 race date~~ — **resolved: 4 December 2026.** Official event naming and any trademark/brand-use constraints remain open.
 2. Author's public name, preferred biography, portrait, and contact channel.
-3. Dr. Varun Reddy's exact title, credentials, affiliations, biography, photo permission, attribution preferences, and disclosures.
+3. ~~Dr. Varun Reddy's exact title, credentials, affiliations, biography, attribution preferences, and disclosures~~ — **resolved: confirmed and published.** Photo permission remains open (no profile photo available yet).
 4. CMS/hosting choice and responsible owner.
 5. Newsletter provider, sender domain, cadence language, and privacy processor details.
 6. Analytics provider and consent approach.
