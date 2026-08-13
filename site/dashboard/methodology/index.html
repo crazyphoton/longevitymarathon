@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Measurement methodology — Longevity Marathon</title>
+<meta name="description" content="Sources, cadence, and the distinction between device estimates, home readings, and laboratory measurements used across the Dashboard.">
+<link rel="stylesheet" href="/assets/css/style.css">
+<meta name="robots" content="index,follow">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="/">
+        <span class="brand__mark">&#9670;</span> Longevity Marathon
+        <span class="brand__sub">longevitymarathon.run</span>
+      </a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <ul class="site-nav__list">
+          <li><a href="/journal/">Journal</a></li>
+          <li><a href="/experiment/">The Experiment</a></li>
+          <li><a href="/plan/">The Plan</a></li>
+          <li><a href="/dashboard/" aria-current="page">Dashboard</a></li>
+          <li><a href="/explainer/">Explainers</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+        <a class="nav-cta" href="/newsletter/">Subscribe</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+  <div class="breadcrumb container"><a href="/dashboard/">Dashboard</a> / Methodology</div>
+  <header class="article-head">
+    <div class="container prose-col">
+      <h1>Measurement methodology</h1>
+      <p class="article-head__deck">Sources, cadence, limitations, and the difference between an
+      estimate and a measurement &mdash; so a number on the Dashboard means what it looks like it
+      means.</p>
+    </div>
+  </header>
+  <article class="article-body">
+    <div class="container prose-col flow">
+
+      <h2>Sources</h2>
+      <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>Source</th><th>Provides</th><th>Category</th></tr></thead>
+        <tbody>
+          <tr><td>Garmin device + Garmin Connect</td><td>Distance, duration, pace, heart rate, elevation, cadence; algorithm-estimated VO&#8322; max, resting heart rate, sleep staging</td><td>Device measurement / device estimate</td></tr>
+          <tr><td>Home blood pressure monitor</td><td>Blood pressure (validated, upper-arm cuff)</td><td>Home reading</td></tr>
+          <tr><td>Bathroom scale (consistent unit &amp; conditions)</td><td>Weight</td><td>Home reading</td></tr>
+          <tr><td>Body-composition method (method to be confirmed at first checkpoint)</td><td>Body fat %, muscle mass</td><td>Home reading or clinical, depending on method chosen</td></tr>
+          <tr><td>Laboratory panel</td><td>Selected blood values (glucose, lipids, and others as relevant)</td><td>Laboratory</td></tr>
+          <tr><td>Logged strength protocol</td><td>Strength benchmark set</td><td>Manual, logged</td></tr>
+          <tr><td>Self-report</td><td>Perceived effort, pain, fueling notes, sleep quality</td><td>Subjective report</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h2>Cadence</h2>
+      <ul>
+        <li><strong>Training data</strong> &mdash; every session, from Garmin.</li>
+        <li><strong>Resting heart rate &amp; sleep</strong> &mdash; nightly from Garmin, read as
+        a rolling weekly average rather than single-night swings.</li>
+        <li><strong>Body composition &amp; strength benchmarks</strong> &mdash; roughly monthly
+        checkpoints, same method each time where possible.</li>
+        <li><strong>Blood pressure &amp; glucose</strong> &mdash; baseline, a mid-project
+        checkpoint, and post-race.</li>
+        <li><strong>Full blood panel</strong> &mdash; baseline and shortly after the marathon.</li>
+      </ul>
+
+      <h2>Estimate vs. measurement</h2>
+      <p>Garmin's VO&#8322; max is a Firstbeat-algorithm estimate derived from pace and heart
+      rate during runs &mdash; useful for watching a trend over months, not equivalent to a
+      laboratory gas-exchange test. Where both exist for the same metric, they're kept as
+      clearly separate series with a visible note, never merged into one line. See the <a
+      href="/explainer/what-vo2-max-is/">VO&#8322; max explainer</a> for the full version of this
+      distinction.</p>
+
+      <h2>Limitations</h2>
+      <ul>
+        <li>One person, not a controlled study &mdash; see <a href="/experiment/#confounders">confounders
+        &amp; limitations</a> on the Experiment page.</li>
+        <li>Home readings vary more than clinical ones with technique, time of day, and
+        conditions; conditions are recorded alongside each reading where they matter.</li>
+        <li>A change in device, cuff, or scale is flagged as a method change, not folded silently
+        into the existing series.</li>
+        <li>Sparse data (fewer than a few comparable readings) is marked Insufficient Data rather
+        than charted as a trend.</li>
+      </ul>
+
+      <h2>What's not published</h2>
+      <p>Original lab and clinical reports stay private. The public site carries selected
+      values, units, dates, methods, and interpretation &mdash; not scanned documents, and not
+      identifiers unrelated to the measurement itself.</p>
+    </div>
+  </article>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <strong class="sans">Longevity Marathon</strong>
+          <p>A public, evidence-aware self-experiment: four months of marathon
+          training, one non-expert, one sports-medicine collaborator, and
+          honest reporting on whatever the health markers actually do.</p>
+        </div>
+        <div>
+          <h3>Read</h3>
+          <ul>
+            <li><a href="/journal/">Journal</a></li>
+            <li><a href="/experiment/">The Experiment</a></li>
+            <li><a href="/plan/">The Plan</a></li>
+            <li><a href="/dashboard/">Dashboard</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Learn</h3>
+          <ul>
+            <li><a href="/explainer/">Explainers</a></li>
+            <li><a href="/health/">Health observations</a></li>
+            <li><a href="/dashboard/methodology/">Measurement methodology</a></li>
+            <li><a href="/collaborators/dr-varun-reddy/">Dr. Varun Reddy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Project</h3>
+          <ul>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/injuries/">Injuries &amp; interruptions</a></li>
+            <li><a href="/gear/">Gear notes</a></li>
+            <li><a href="/costs/">Cost addendum</a></li>
+            <li><a href="/newsletter/">Newsletter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Longevity Marathon. One person's experience, not medical advice.</span>
+        <span><a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms &amp; medical disclaimer</a></span>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

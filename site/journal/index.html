@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journal — Longevity Marathon</title>
+<meta name="description" content="Every entry in the Longevity Marathon project — runs, reflections, plan updates, doctor conversations, test updates, injuries, gear, and explainers — in reverse chronological order.">
+<link rel="stylesheet" href="/assets/css/style.css">
+<meta name="robots" content="index,follow">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="/">
+        <span class="brand__mark">&#9670;</span> Longevity Marathon
+        <span class="brand__sub">longevitymarathon.run</span>
+      </a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <ul class="site-nav__list">
+          <li><a href="/journal/" aria-current="page">Journal</a></li>
+          <li><a href="/experiment/">The Experiment</a></li>
+          <li><a href="/plan/">The Plan</a></li>
+          <li><a href="/dashboard/">Dashboard</a></li>
+          <li><a href="/explainer/">Explainers</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+        <a class="nav-cta" href="/newsletter/">Subscribe</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+  <section class="hero" style="padding-bottom:2rem;">
+    <div class="container prose-col">
+      <span class="eyebrow eyebrow--muted">Journal</span>
+      <h1 style="font-size:clamp(1.8rem,3.6vw,2.5rem);">Every run, reflection, plan change, and setback — in the order they happened</h1>
+      <p class="hero__lede">The Journal is the primary content of this project. Runs are one
+      entry type among several: reflections, plan updates, doctor conversations, test updates,
+      injuries, gear decisions, and explainers all get equal billing here. Not every run makes
+      the homepage; every run is published.</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="filters" data-journal-filters>
+      <div class="filter-group">
+        <span class="filter-group__label">Type</span>
+        <div class="filter-chips">
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="all" aria-pressed="true">All types</button>
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="run" aria-pressed="false">Run</button>
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="reflection" aria-pressed="false">Reflection</button>
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="doctor-conversation" aria-pressed="false">Doctor Conversation</button>
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="plan" aria-pressed="false">Plan Update</button>
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="test" aria-pressed="false">Test Update</button>
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="injury" aria-pressed="false">Injury/Interruption</button>
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="gear" aria-pressed="false">Gear</button>
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="explainer" aria-pressed="false">Explainer</button>
+          <button class="chip" type="button" data-filter-group="type" data-filter-value="retrospective" aria-pressed="false">Retrospective</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-group__label">Topic</span>
+        <div class="filter-chips">
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="all" aria-pressed="true">All topics</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="VO2 max" aria-pressed="false">VO2 max</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="Zone 2" aria-pressed="false">Zone 2</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="RHR" aria-pressed="false">RHR</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="sleep" aria-pressed="false">sleep</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="strength" aria-pressed="false">strength</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="body composition" aria-pressed="false">body composition</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="glucose" aria-pressed="false">glucose</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="blood pressure" aria-pressed="false">blood pressure</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="fueling" aria-pressed="false">fueling</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="heat" aria-pressed="false">heat</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="shoes" aria-pressed="false">shoes</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="recovery" aria-pressed="false">recovery</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="injury" aria-pressed="false">injury</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="motivation" aria-pressed="false">motivation</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="research" aria-pressed="false">research</button>
+          <button class="chip" type="button" data-filter-group="topic" data-filter-value="race strategy" aria-pressed="false">race strategy</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-group__label">Phase</span>
+        <div class="filter-chips">
+          <button class="chip" type="button" data-filter-group="phase" data-filter-value="all" aria-pressed="true">All phases</button>
+          <button class="chip" type="button" data-filter-group="phase" data-filter-value="pre-training" aria-pressed="false">Pre-training</button>
+          <button class="chip" type="button" data-filter-group="phase" data-filter-value="foundation" aria-pressed="false">Foundation</button>
+          <button class="chip" type="button" data-filter-group="phase" data-filter-value="build" aria-pressed="false">Build</button>
+          <button class="chip" type="button" data-filter-group="phase" data-filter-value="peak" aria-pressed="false">Peak</button>
+          <button class="chip" type="button" data-filter-group="phase" data-filter-value="taper" aria-pressed="false">Taper</button>
+          <button class="chip" type="button" data-filter-group="phase" data-filter-value="race-week" aria-pressed="false">Race week</button>
+          <button class="chip" type="button" data-filter-group="phase" data-filter-value="post-race" aria-pressed="false">Post-race</button>
+        </div>
+      </div>
+      <button class="btn btn-secondary filters__reset" type="button" data-filters-reset>Reset filters</button>
+    </div>
+    <p class="text-small sans" data-journal-count style="color:var(--color-ink-faint);margin:0.8rem 0 0;">Showing all 3 entries.</p>
+  </section>
+
+  <section class="container prose-col" style="padding-bottom:3rem;">
+    <div data-journal-empty style="display:none;" class="state-card" role="status">
+      <div class="state-card__kicker">No matches</div>
+      <h3>Nothing published yet for this combination</h3>
+      <p>Try clearing a filter, or browse by a different type — the Journal is only three
+      entries deep at launch, so most filter combinations will come up short for now.</p>
+      <div class="state-card__actions"><button class="btn btn-secondary" type="button" data-filters-reset>Reset filters</button></div>
+    </div>
+    <article class="entry-card" data-entry-card data-type="plan" data-topics="race strategy,motivation" data-phase="foundation">
+        <div class="entry-card__meta">
+          <span class="pill pill--type-plan">Plan Update</span>
+          <span>9 Aug 2026</span><span>&middot;</span><span>6 min read</span>
+        </div>
+        <h3 class="entry-card__title"><a href="/journal/the-plan-starts-monday/">The plan starts Monday — and it already changed once</a></h3>
+        <p class="entry-card__deck">Before I ran a single step, I re-read my own training plan next to the numbers a physiologist would use, and didn't love what I saw. What changed, and why the doctor review isn't even the reason.</p>
+      </article>
+      <article class="entry-card" data-entry-card data-type="reflection" data-topics="motivation,research" data-phase="pre-training">
+        <div class="entry-card__meta">
+          <span class="pill pill--type-reflection">Reflection</span>
+          <span>6 Aug 2026</span><span>&middot;</span><span>4 min read</span>
+        </div>
+        <h3 class="entry-card__title"><a href="/journal/why-a-marathon-needs-a-second-opinion/">Why a marathon needs a second opinion</a></h3>
+        <p class="entry-card__deck">I know how to follow a training plan I found online. I don't know what it does to a 40-year-old's blood pressure. That gap is why Dr. Varun Reddy is involved — and why his page says less about him than you'd expect, for now.</p>
+      </article>
+      <article class="entry-card" data-entry-card data-type="reflection" data-topics="motivation,research" data-phase="pre-training">
+        <div class="entry-card__meta">
+          <span class="pill pill--type-reflection">Reflection</span>
+          <span>3 Aug 2026</span><span>&middot;</span><span>5 min read</span>
+        </div>
+        <h3 class="entry-card__title"><a href="/journal/why-im-doing-this/">Why I'm doing this</a></h3>
+        <p class="entry-card__deck">A marathon has a finish line. Health doesn't. This is the premise, the five-hour number, and why I'm treating my own body as the data set.</p>
+      </article>
+  </section>
+
+  <section class="section" style="border-top:1px solid var(--color-rule);border-bottom:none;">
+    <div class="container prose-col">
+      <div class="newsletter-block on-light" data-newsletter-placement="journal_index">
+        <h2>Follow the experiment, including the parts that go wrong.</h2>
+        <p>Get new Journal entries, meaningful data updates, plan changes, and the eventual marathon result. No community platform, no daily spam, and no pretending every wobble in a chart is a breakthrough.</p>
+        <form data-newsletter-form novalidate>
+          <input type="hidden" name="source" value="journal_index">
+          <div class="newsletter-form__field">
+            <label for="email-journal_index">Email</label>
+            <input type="email" id="email-journal_index" name="email" autocomplete="email" required aria-describedby="email-journal_index-error">
+            <span class="field-error" id="email-journal_index-error" data-email-error role="alert"></span>
+          </div>
+          <div class="newsletter-form__field">
+            <label for="name-journal_index">First name (optional)</label>
+            <input type="text" id="name-journal_index" name="first_name" autocomplete="given-name">
+          </div>
+          <button type="submit">Subscribe</button>
+          <div class="form-status" data-form-status role="status" aria-live="polite"></div>
+        </form>
+        <p class="newsletter-consent">By subscribing you agree to receive project emails and
+        confirm your address by double opt-in. Unsubscribe anytime from any email.
+        See the <a href="/privacy/">privacy policy</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <strong class="sans">Longevity Marathon</strong>
+          <p>A public, evidence-aware self-experiment: four months of marathon
+          training, one non-expert, one sports-medicine collaborator, and
+          honest reporting on whatever the health markers actually do.</p>
+        </div>
+        <div>
+          <h3>Read</h3>
+          <ul>
+            <li><a href="/journal/">Journal</a></li>
+            <li><a href="/experiment/">The Experiment</a></li>
+            <li><a href="/plan/">The Plan</a></li>
+            <li><a href="/dashboard/">Dashboard</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Learn</h3>
+          <ul>
+            <li><a href="/explainer/">Explainers</a></li>
+            <li><a href="/health/">Health observations</a></li>
+            <li><a href="/dashboard/methodology/">Measurement methodology</a></li>
+            <li><a href="/collaborators/dr-varun-reddy/">Dr. Varun Reddy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Project</h3>
+          <ul>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/injuries/">Injuries &amp; interruptions</a></li>
+            <li><a href="/gear/">Gear notes</a></li>
+            <li><a href="/costs/">Cost addendum</a></li>
+            <li><a href="/newsletter/">Newsletter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Longevity Marathon. One person's experience, not medical advice.</span>
+        <span><a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms &amp; medical disclaimer</a></span>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Experiment — Longevity Marathon</title>
+<meta name="description" content="The full methodology: hypothesis, health markers observed, data sources, estimate-vs-measurement distinctions, confounders, and how conclusions will be framed.">
+<link rel="stylesheet" href="/assets/css/style.css">
+<meta name="robots" content="index,follow">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="/">
+        <span class="brand__mark">&#9670;</span> Longevity Marathon
+        <span class="brand__sub">longevitymarathon.run</span>
+      </a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <ul class="site-nav__list">
+          <li><a href="/journal/">Journal</a></li>
+          <li><a href="/experiment/" aria-current="page">The Experiment</a></li>
+          <li><a href="/plan/">The Plan</a></li>
+          <li><a href="/dashboard/">Dashboard</a></li>
+          <li><a href="/explainer/">Explainers</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+        <a class="nav-cta" href="/newsletter/">Subscribe</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+  <header class="article-head">
+    <div class="container prose-col">
+      <span class="eyebrow eyebrow--muted">The Experiment</span>
+      <h1>What's being asked, measured, and inferred</h1>
+      <p class="article-head__deck">This page is the methodology. If the rest of the site is
+      the story, this is the fine print that keeps the story honest — what's actually being
+      measured, on what schedule, from what sources, and what conclusions the data can and
+      can't support.</p>
+    </div>
+  </header>
+
+  <article class="article-body">
+    <div class="doc-layout container">
+      <div class="doc-layout__main flow">
+
+        <h2 id="hypothesis">1. Central hypothesis</h2>
+        <div class="definition-strip">Can four months of training for a marathon meaningfully
+        improve measurable healthspan and cardiorespiratory fitness without sacrificing muscle,
+        strength, or overall health?</div>
+        <p>This is a question to investigate, not a claim to prove. Health findings will be
+        reported accurately regardless of direction — an improvement, a decline, and a null
+        result are all treated as valid, publishable outcomes.</p>
+
+        <h2 id="why">2. Why a marathon, and why four months</h2>
+        <p>A marathon forces a real, sustained training load that's hard to fake. Four months is
+        long enough for meaningful physiological adaptation — and for a plan to collide with
+        sleep, work, injury risk, and ordinary life — without turning into an indefinite,
+        never-concluding project.</p>
+
+        <h2 id="target">3. Athletic target and project success criteria</h2>
+        <p>The athletic target is fixed: <strong>42.2&nbsp;km in 5:00</strong> at the BYD
+        Singapore Marathon 2026. The project succeeds if that target is met <em>and</em> the
+        process is documented well enough to reconstruct what was planned, what happened, what
+        changed, and why. If the five-hour target is missed, the project is still a success as
+        long as the result is reported honestly — athletic outcome and documentation quality are
+        judged separately.</p>
+
+        <h2 id="markers">4. Health markers observed</h2>
+        <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Category</th><th>Markers</th><th>Core?</th></tr></thead>
+          <tbody>
+            <tr><td>Cardiorespiratory</td><td>VO&#8322; max (Garmin-estimated; lab test if scheduled)</td><td class="mono">Yes</td></tr>
+            <tr><td>Recovery</td><td>Resting heart rate, sleep</td><td class="mono">Yes</td></tr>
+            <tr><td>Body composition</td><td>Weight, body fat %, muscle mass</td><td class="mono">Yes</td></tr>
+            <tr><td>Strength</td><td>A fixed benchmark set (protocol on <a href="/health/strength/">the strength page</a>)</td><td class="mono">Yes</td></tr>
+            <tr><td>Cardiometabolic</td><td>Blood pressure, glucose</td><td class="mono">Yes</td></tr>
+            <tr><td>Laboratory</td><td>Selected blood tests, extracted values only</td><td class="mono">Yes</td></tr>
+            <tr><td>Supplemental</td><td>HRV, if a source that's already in use later provides it</td><td class="mono">No</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>HRV is deliberately not a core metric. Adding it as a requirement would mean asking
+        readers to trust a device dependency (commonly a paid subscription service) this project
+        doesn't need. Resting heart rate remains the core practical recovery marker instead.</p>
+
+        <h2 id="schedule">5. Baseline and follow-up schedule</h2>
+        <p>Baseline measurements are being scheduled and are not yet public — see the honest
+        "Awaiting Data" state on the <a href="/dashboard/">Dashboard</a> rather than a number
+        standing in for one. The intended cadence, once baselines exist: body composition and
+        strength benchmarks at roughly monthly checkpoints; resting heart rate and sleep as a
+        rolling weekly average from Garmin; blood pressure and glucose at baseline, mid-project,
+        and post-race; a full blood panel at baseline and again shortly after the marathon.</p>
+
+        <h2 id="sources">6. Garmin and other data sources</h2>
+        <ul>
+          <li><strong>Garmin device + app</strong> — training data (distance, duration, pace,
+          heart rate, elevation), and algorithm-based estimates (VO&#8322; max, resting heart
+          rate, sleep staging).</li>
+          <li><strong>Home readings</strong> — a validated blood pressure monitor, a consistent
+          bathroom scale, and a consumer-grade glucose reading where relevant.</li>
+          <li><strong>Clinical / laboratory</strong> — blood panels and any formal fitness
+          testing (e.g. a lab VO&#8322; max test), if scheduled.</li>
+          <li><strong>Subjective self-report</strong> — perceived effort, pain, fatigue,
+          motivation, logged alongside the numbers, not instead of them.</li>
+        </ul>
+
+        <h2 id="estimates">7. Estimates vs. measurements</h2>
+        <p>These are not interchangeable, and the site tries never to imply otherwise:</p>
+        <ul>
+          <li><strong>Device estimate</strong> — e.g. Garmin's VO&#8322; max, derived from an
+          algorithm (Firstbeat) using pace, heart rate, and run data. Useful for trend, not a
+          diagnostic number.</li>
+          <li><strong>Home reading</strong> — e.g. a blood pressure cuff at home. Real
+          measurement, but with more variable technique and conditions than a clinical
+          setting.</li>
+          <li><strong>Laboratory / clinical measurement</strong> — e.g. a blood panel or a
+          gas-exchange VO&#8322; max test. The highest-confidence category, and the rarest.</li>
+          <li><strong>Subjective report</strong> — e.g. perceived effort or sleep quality.
+          Real data about lived experience, not a physiological measurement.</li>
+        </ul>
+        <p>Every reading published on this site states which of these four categories it belongs
+        to. See <a href="/dashboard/methodology/">Measurement methodology</a> for the full
+        detail.</p>
+
+        <h2 id="confounders">8. Confounders and limitations</h2>
+        <p>This is one 40-ish-year-old person, not a controlled trial. Training isn't the only
+        thing changing over these four months — sleep, travel, work stress, diet, and Singapore's
+        heat and humidity all move at the same time, and none of them can be held constant. Where
+        a health marker changes, the site will name plausible contributing factors rather than
+        crediting or blaming training alone. A single before/after comparison is never treated as
+        proof of causation, and short-term noise (a few days of an elevated resting heart rate, a
+        single low-glucose reading) is not reported as a trend.</p>
+
+        <h2 id="reddy-role">9. Dr. Reddy's role and evidence standard</h2>
+        <p>Dr. Varun Reddy is a sports-medicine and research collaborator on this project — not a
+        treating clinician for readers. His full credentials and title are pending verification
+        (see <a href="/collaborators/dr-varun-reddy/">his profile</a>), and no commentary is
+        published under his name until it's actually his, reviewed and dated. Where he does
+        comment, the site distinguishes an evidence summary, his clinical/expert judgment, and a
+        project-specific suggestion — three different kinds of claims — and links primary
+        research or strong evidence reviews where that's appropriate.</p>
+
+        <h2 id="conclusions">10. How conclusions will be framed</h2>
+        <ul>
+          <li>"After" is not treated as "because of." Sequence is described as sequence; causal
+          language is reserved for when the evidence actually supports it.</li>
+          <li>Individual observations are reported as observations about one person, not general
+          recommendations for readers.</li>
+          <li>Missing, inconsistent, or non-comparable readings are labeled as such rather than
+          smoothed over.</li>
+          <li>Changes in measurement method (a new scale, a different cuff) are flagged, and
+          series measured differently are not silently merged into one line.</li>
+        </ul>
+
+        <h2 id="timeline">11. Project timeline</h2>
+        <ul class="timeline"><li class="timeline__item">
+          <div class="timeline__date">Aug 2026</div>
+          <div class="timeline__title">Foundation phase begins (Weeks 1–4)</div>
+          <div>Plan v2 in effect. Baseline health measurements being scheduled.</div>
+        </li><li class="timeline__item">
+          <div class="timeline__date">Sep 2026</div>
+          <div class="timeline__title">Build phase (Weeks 5–9)</div>
+          <div>Quality sessions and mileage increase; first monthly checkpoint.</div>
+        </li><li class="timeline__item">
+          <div class="timeline__date">Oct 2026</div>
+          <div class="timeline__title">Peak phase (Weeks 10–13)</div>
+          <div>Peak long run (32 km, Week 13); second checkpoint.</div>
+        </li><li class="timeline__item">
+          <div class="timeline__date">Nov 2026</div>
+          <div class="timeline__title">Taper (Weeks 14–16)</div>
+          <div>Mileage tapers; final pre-race checks.</div>
+        </li><li class="timeline__item">
+          <div class="timeline__date">Early Dec 2026</div>
+          <div class="timeline__title">Race week &amp; BYD Singapore Marathon 2026</div>
+          <div>Exact date pending organizer confirmation.</div>
+        </li><li class="timeline__item">
+          <div class="timeline__date">Within weeks of race day</div>
+          <div class="timeline__title">Immediate post-race retrospective</div>
+          <div>Result, post-race health comparison where available, and a full accounting of plan vs. actual.</div>
+        </li></ul>
+
+        <h2 id="disclaimer">12. Medical / informational disclaimer</h2>
+        <p class="boundary-banner">This site documents one person's training and health data. It is educational and informational, not medical advice, and Dr. Reddy's involvement is a collaborator role, not a clinician&ndash;patient relationship with readers. See <a href="/terms/">Terms &amp; medical disclaimer</a>.</p>
+      </div>
+
+      <aside class="doc-layout__margin" aria-label="Quick reference">
+        <div class="margin-note">
+          <span class="margin-note__label">Target</span>
+          <span class="margin-note__value">42.2 km / 5:00</span>
+        </div>
+        <div class="margin-note">
+          <span class="margin-note__label">Status</span>
+          <span class="margin-note__value">Week 1 of 17</span>
+        </div>
+        <div class="margin-note">
+          <span class="margin-note__label">Core health markers</span>
+          <span class="margin-note__value" style="font-size:0.85rem;">VO&#8322;max &middot; RHR &middot; weight &middot; body comp &middot; strength &middot; BP &middot; glucose &middot; labs</span>
+        </div>
+        <div class="margin-note">
+          <span class="margin-note__label">Related</span>
+          <span class="margin-note__value" style="font-size:0.9rem;"><a href="/dashboard/methodology/">Measurement methodology</a></span>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <section class="section" style="border-top:1px solid var(--color-rule);border-bottom:none;">
+    <div class="container prose-col">
+      <div class="newsletter-block on-light" data-newsletter-placement="experiment">
+        <h2>Follow the experiment, including the parts that go wrong.</h2>
+        <p>Get new Journal entries, meaningful data updates, plan changes, and the eventual marathon result. No community platform, no daily spam, and no pretending every wobble in a chart is a breakthrough.</p>
+        <form data-newsletter-form novalidate>
+          <input type="hidden" name="source" value="experiment">
+          <div class="newsletter-form__field">
+            <label for="email-experiment">Email</label>
+            <input type="email" id="email-experiment" name="email" autocomplete="email" required aria-describedby="email-experiment-error">
+            <span class="field-error" id="email-experiment-error" data-email-error role="alert"></span>
+          </div>
+          <div class="newsletter-form__field">
+            <label for="name-experiment">First name (optional)</label>
+            <input type="text" id="name-experiment" name="first_name" autocomplete="given-name">
+          </div>
+          <button type="submit">Subscribe</button>
+          <div class="form-status" data-form-status role="status" aria-live="polite"></div>
+        </form>
+        <p class="newsletter-consent">By subscribing you agree to receive project emails and
+        confirm your address by double opt-in. Unsubscribe anytime from any email.
+        See the <a href="/privacy/">privacy policy</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <strong class="sans">Longevity Marathon</strong>
+          <p>A public, evidence-aware self-experiment: four months of marathon
+          training, one non-expert, one sports-medicine collaborator, and
+          honest reporting on whatever the health markers actually do.</p>
+        </div>
+        <div>
+          <h3>Read</h3>
+          <ul>
+            <li><a href="/journal/">Journal</a></li>
+            <li><a href="/experiment/">The Experiment</a></li>
+            <li><a href="/plan/">The Plan</a></li>
+            <li><a href="/dashboard/">Dashboard</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Learn</h3>
+          <ul>
+            <li><a href="/explainer/">Explainers</a></li>
+            <li><a href="/health/">Health observations</a></li>
+            <li><a href="/dashboard/methodology/">Measurement methodology</a></li>
+            <li><a href="/collaborators/dr-varun-reddy/">Dr. Varun Reddy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Project</h3>
+          <ul>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/injuries/">Injuries &amp; interruptions</a></li>
+            <li><a href="/gear/">Gear notes</a></li>
+            <li><a href="/costs/">Cost addendum</a></li>
+            <li><a href="/newsletter/">Newsletter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Longevity Marathon. One person's experience, not medical advice.</span>
+        <span><a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms &amp; medical disclaimer</a></span>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
