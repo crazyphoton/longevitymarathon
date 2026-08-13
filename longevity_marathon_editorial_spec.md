@@ -65,7 +65,9 @@ This is about phrasing only — the underlying evidence/medical *policy* (attrib
 
 ## 6. Anti-AI-slop scan
 
-Reject unless quoted, discussed critically, or used in an unusually concrete and justified way: *embark on/upon, unlock your potential, transformative journey, tapestry, treasure trove, game-changer, life-changing, beast mode, biohack(ing) as promotional identity, revolutionise/revolutionary (no literal revolution), elevate your, supercharge, unleash, the ultimate guide, a testament to, ever-evolving landscape, at the intersection of, in today's fast-paced world, delve into, holistic journey, data-driven optimisation as image rather than description.*
+Reject unless quoted, discussed critically, or used in an unusually concrete and justified way: *embark on/upon, unlock your potential, transformative journey, tapestry, treasure trove, game-changer, life-changing, beast mode, revolutionise/revolutionary (no literal revolution), elevate your, supercharge, unleash, the ultimate guide, a testament to, ever-evolving landscape, at the intersection of, in today's fast-paced world, delve into, holistic journey, data-driven optimisation as image rather than description.*
+
+**"Biohacking" is permitted**, unlike the rest of this list — the author uses it plainly to describe his own wearables/self-tracking history (e.g. "tinkering with wearables and biohacking for seven years"). It should still read as a concrete, specific self-description, not a promotional identity or a sales pitch — the underlying anti-slop instinct (concrete over promotional) still applies, this one word is just no longer flagged on sight.
 
 Flag for contextual review: "This isn't just X; it's Y." / "It's not about X. It's about Y." / "More than X, Y." / "From X to Y" with no real progression / "Whether you're A, B, or C..." / "Here's the thing..." as filler / "The truth is..." before an unsupported opinion / "Ultimately," + generic summary / "In a world where..." / "Imagine..." as an unearned opening / serial rhetorical questions / repeated "clear, simple, powerful" adjective triads / three consecutive sections with the same sentence shape.
 

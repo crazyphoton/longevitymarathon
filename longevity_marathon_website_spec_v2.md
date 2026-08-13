@@ -822,7 +822,7 @@ The voice is measured, factual, rigorous, conversational, curious, and irreveren
 - Prefer specific numbers and concrete episodes over generic motivation language.
 - Publish bad days and mistakes without manufacturing drama.
 - Correct errors visibly and calmly.
-- Avoid “biohacking,” “reversing age,” or “proof” language unless directly critiquing it.
+- Avoid “reversing age” or “proof” language unless directly critiquing it. ("Biohacking" is permitted — the author uses the term for his own wearables/self-tracking history.)
 - Do not imply that completing a marathon is necessary or sufficient for longevity.
 
 ### 9.3 Evidence standard
