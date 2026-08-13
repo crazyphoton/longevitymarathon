@@ -1009,11 +1009,11 @@ Editors must be able to:
 
 ### 13.2 Garmin data
 
-Garmin is the primary training and day-to-day physiological source. V1 may begin with manual entry or export/import. The model should preserve a stable private source identifier so automation can be added later without rebuilding content.
+Garmin is the primary training and day-to-day physiological source. V1 begins with manual entry or export/import against local, gitignored source files; no raw Garmin, WHOOP, or Strava export is ever committed to the site repository. The model preserves a stable private source identifier so automation can be added later without rebuilding content.
 
-If automation is implemented:
+Automation, once the Supabase data platform (§13.8) is in place:
 
-- Ingest into a private staging record.
+- A scheduled job pulls Garmin data automatically and ingests it into a private Postgres staging table — never into the site repository.
 - Let the author select what becomes public.
 - Prevent duplicates.
 - Preserve original source units and timestamps.
@@ -1065,6 +1065,24 @@ Avoid invasive session replay by default, and document analytics in Privacy.
 - Form spam protection that remains accessible.
 - Dependency and platform update process.
 - Error monitoring without collecting unnecessary health or form data.
+
+### 13.8 Data platform and hosting architecture
+
+**Phase 1 (current) — static, no backend.**
+
+- The site is a static HTML/CSS/JS bundle (`site/`) deployed via GitHub Pages, served at the domain root (custom domain via `CNAME`, or a user/org Pages repo) so the site's root-absolute paths resolve correctly.
+- No database and no server-side processing. Raw source exports (Garmin, WHOOP, Strava) live only in a local, gitignored `data/` folder and never enter the repository; only curated, aggregated figures the author has chosen to publish are hand-authored into content.
+- This phase is sufficient to launch the shell and start publishing; it does not yet support automated ingestion or the companion logging app.
+
+**Phase 2 (planned) — Supabase data platform.**
+
+Deferred until after V1 is live and the companion app is running, then added as follows:
+
+- Add Supabase (managed Postgres + auto-generated REST API + Auth + scheduled Edge Functions) as the single backend for all non-editorial data. This is additive infrastructure, not a hosting migration — GitHub Pages continues to serve `site/`.
+- **Garmin ingestion:** a scheduled Edge Function pulls Garmin Connect data automatically (an unofficial client library, since Garmin's official Health API requires partner approval) into a private Postgres table, per §13.2. Raw records are never public and never committed to the site repo.
+- **App-logged data:** the companion pre/post-run logging app writes directly to Supabase via its client SDK, gated by row-level security — no custom API server required.
+- **Curation:** the author selects what becomes public from the private tables, consistent with the ingest-privately/publish-selectively rule in §13.2 and §13.1.
+- **Site build:** a GitHub Action queries Supabase for only the curated/aggregated fields the static site needs, regenerates the affected pages/JSON, and GitHub Pages redeploys. The public site remains fully static; Supabase is never queried client-side by site visitors.
 
 ---
 
@@ -1188,12 +1206,12 @@ These questions do not block the product definition, but should be resolved befo
 1. ~~Exact BYD Singapore Marathon 2026 race date~~ — **resolved: 4 December 2026.** Official event naming and any trademark/brand-use constraints remain open.
 2. Author's public name, preferred biography, portrait, and contact channel.
 3. ~~Dr. Varun Reddy's exact title, credentials, affiliations, biography, attribution preferences, and disclosures~~ — **resolved: confirmed and published.** Photo permission remains open (no profile photo available yet).
-4. CMS/hosting choice and responsible owner.
+4. ~~CMS/hosting choice and responsible owner.~~ — **resolved: static site on GitHub Pages for V1 (§13.8); Supabase added as the data backend in a later phase. Responsible owner: the author, pending final name (item 2).**
 5. Newsletter provider, sender domain, cadence language, and privacy processor details.
 6. Analytics provider and consent approach.
 7. Initial measurement protocols, baseline dates, and which blood tests will be published.
 8. Strength benchmark protocol.
-9. Whether Garmin data begins as manual entry, export/import, or API integration.
+9. ~~Whether Garmin data begins as manual entry, export/import, or API integration.~~ — **resolved: begins as manual export/import in V1; moves to automated API integration via a scheduled Supabase Edge Function once the data platform (§13.8) is built.**
 
 ### Resolve during design/build
 
