@@ -64,6 +64,7 @@
         <p>Get new Journal entries, meaningful data updates, plan changes, and the eventual marathon result. No community platform, no daily spam, and no pretending every wobble in a chart is a breakthrough.</p>
         <form data-newsletter-form novalidate>
           <input type="hidden" name="source" value="newsletter_page">
+          <input class="hp-field" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="newsletter-form__field">
             <label for="email-newsletter_page">Email</label>
             <input type="email" id="email-newsletter_page" name="email" autocomplete="email" required aria-describedby="email-newsletter_page-error">
@@ -88,9 +89,9 @@
       See <a href="/privacy/">Privacy</a> for what's collected and why.</p>
 
       <h2>Already subscribed?</h2>
-      <p>Submitting the same address again safely tells you it's already on the list rather than
-      creating a duplicate &mdash; try it with <code class="mono">already@subscribed.demo</code>
-      in the form above to see that state.</p>
+      <p>Submitting the same address again never creates a duplicate. If you're already
+      confirmed, nothing changes; if your earlier signup was never confirmed, a fresh
+      confirmation email is sent.</p>
     </div>
   </article>
 

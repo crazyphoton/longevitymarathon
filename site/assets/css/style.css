@@ -644,3 +644,6 @@ ins.revision-new {
 /* Actual-mileage overlay on the planned weekly bar chart (build_site_data.py). */
 .barchart__track { position: relative; }
 .barchart__fill--actual { position: absolute; top: 50%; left: 0; transform: translateY(-50%); height: 0.32rem; border-radius: 2px; background: var(--color-ink); opacity: 0.7; }
+
+/* Honeypot field for the newsletter form: invisible to humans, present in markup. */
+.hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }

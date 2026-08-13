@@ -1,7 +1,7 @@
 /* Longevity Marathon — shared front-end behavior.
-   Minimal vanilla JS: mobile nav toggle, newsletter form (simulated —
-   no backend exists yet), and journal filters reflected in the URL
-   query string. No framework, no build step. */
+   Minimal vanilla JS: mobile nav toggle, newsletter form (double opt-in
+   via a Supabase Edge Function + Resend, see spec §13.4), and journal
+   filters reflected in the URL query string. No framework, no build step. */
 
 (function () {
   "use strict";
@@ -24,17 +24,20 @@
     });
   }
 
-  /* ---------- Newsletter form (simulated) ----------
-     There is no real subscription backend in this prototype. The form
-     validates client-side and shows success/error/already-subscribed
-     states so the pattern can be reviewed and later wired to a real
-     double opt-in provider (see /privacy and website spec §13.4). */
+  /* ---------- Newsletter form (double opt-in) ----------
+     Posts to a Supabase Edge Function which stores the pending subscriber
+     and sends a confirmation email via Resend. Nothing is sent to the list
+     until the reader confirms (see /privacy and website spec §13.4). */
+  var SUBSCRIBE_URL =
+    "https://hwquutezbptpuppilvgq.supabase.co/functions/v1/newsletter/subscribe";
+
   function initNewsletterForms() {
     var forms = document.querySelectorAll("[data-newsletter-form]");
     forms.forEach(function (form) {
       var email = form.querySelector('input[type="email"]');
       var status = form.querySelector("[data-form-status]");
       var emailError = form.querySelector("[data-email-error]");
+      var submitBtn = form.querySelector('button[type="submit"], button:not([type])');
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -60,26 +63,80 @@
         if (emailError) emailError.classList.remove("is-visible");
         email.removeAttribute("aria-invalid");
 
-        // Simulate a network round trip and a known "already subscribed" demo address.
         if (status) {
           status.className = "form-status is-visible";
           status.textContent = "Sending…";
         }
-        window.setTimeout(function () {
-          if (!status) return;
-          if (value.toLowerCase() === "already@subscribed.demo") {
+        if (submitBtn) submitBtn.disabled = true;
+
+        var firstNameInput = form.querySelector('input[name="first_name"]');
+        var sourceInput = form.querySelector('input[name="source"]');
+        var honeypot = form.querySelector('input[name="website"]');
+
+        fetch(SUBSCRIBE_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: value,
+            first_name: firstNameInput ? firstNameInput.value : "",
+            source: sourceInput ? sourceInput.value : "",
+            website: honeypot ? honeypot.value : ""
+          })
+        })
+          .then(function (resp) {
+            return resp.json().then(function (body) {
+              return { ok: resp.ok, body: body };
+            });
+          })
+          .then(function (result) {
+            if (!status) return;
+            if (result.ok) {
+              status.className = "form-status is-visible form-status--success";
+              status.textContent =
+                "Almost there — check " + value + " for a confirmation email. Nothing gets sent to the list until you confirm.";
+              form.reset();
+            } else {
+              status.className = "form-status is-visible form-status--error";
+              status.textContent =
+                (result.body && result.body.error) ||
+                "Something went wrong on our side. Please try again.";
+            }
+          })
+          .catch(function () {
+            if (!status) return;
             status.className = "form-status is-visible form-status--error";
             status.textContent =
-              "That address is already subscribed. Check your inbox for the most recent entry, or look for a confirmation email from your first signup.";
-          } else {
-            status.className = "form-status is-visible form-status--success";
-            status.textContent =
-              "Almost there — check " + value + " for a confirmation email. Nothing gets sent to the list until you confirm.";
-            form.reset();
-          }
-        }, 500);
+              "Couldn't reach the subscription service. Check your connection and try again — your place on this page is safe.";
+          })
+          .then(function () {
+            if (submitBtn) submitBtn.disabled = false;
+          });
       });
     });
+  }
+
+  /* ---------- Confirm/unsubscribe landing states ----------
+     The Edge Function redirects back to /newsletter/?state=… after a
+     reader clicks a confirmation or unsubscribe link. */
+  function initNewsletterState() {
+    var state = new URLSearchParams(window.location.search).get("state");
+    if (!state) return;
+    var status = document.querySelector("[data-form-status]");
+    if (!status) return;
+    var messages = {
+      confirmed:
+        "Subscription confirmed — you're on the list. New entries and meaningful data updates will land in your inbox.",
+      unsubscribed:
+        "You've been unsubscribed. No further emails will be sent to your address.",
+      invalid:
+        "That link is invalid or was already used. If you were trying to subscribe, submit the form again for a fresh confirmation email."
+    };
+    if (!messages[state]) return;
+    status.className =
+      "form-status is-visible " +
+      (state === "invalid" ? "form-status--error" : "form-status--success");
+    status.textContent = messages[state];
+    status.scrollIntoView({ block: "center" });
   }
 
   /* ---------- Journal filters, reflected in the URL query string ---------- */
@@ -174,6 +231,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     initNav();
     initNewsletterForms();
+    initNewsletterState();
     initJournalFilters();
   });
 })();

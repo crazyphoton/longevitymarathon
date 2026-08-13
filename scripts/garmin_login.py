@@ -1,29 +1,64 @@
 #!/usr/bin/env python3
-"""Interactive one-time Garmin Connect login.
+"""One-time Garmin Connect login, driven by files instead of prompts (the
+sandbox's `!` commands have no interactive stdin).
 
-Run this yourself (it prompts for your Garmin email, password, and MFA code):
-
-    python3 scripts/garmin_login.py
-
-It mints Garmin OAuth tokens, keeps a local copy in the gitignored
-data/garmin_tokens/ folder, and uploads the bundle to the private garmin_token
-table in Supabase, where the daily ingest job keeps it fresh as the refresh
-token rotates. Your password is used only for this login and is never stored.
+Flow:
+1. This script runs in the background and waits (up to 30 min) for
+   data/garmin_credentials.json to appear:  {"email": "...", "password": "..."}
+2. It logs in. If Garmin asks for an MFA code, it waits (up to 10 min) for
+   data/garmin_mfa_code.txt containing just the code.
+3. On success it uploads the token bundle to the private garmin_token table in
+   Supabase, keeps a local copy in gitignored data/garmin_tokens/, and deletes
+   the credentials and MFA files. The password is never stored.
 
 Requires: pip install garminconnect requests
 Env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
 """
 
-import getpass
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 import requests
 from garminconnect import Garmin
 
-TOKEN_DIR = Path(__file__).resolve().parent.parent / "data" / "garmin_tokens"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+CREDS_FILE = DATA_DIR / "garmin_credentials.json"
+MFA_FILE = DATA_DIR / "garmin_mfa_code.txt"
+TOKEN_DIR = DATA_DIR / "garmin_tokens"
+
+CREDS_TIMEOUT_S = 30 * 60
+MFA_TIMEOUT_S = 10 * 60
+POLL_S = 5
+
+
+def wait_for_file(path: Path, timeout_s: int, what: str) -> str:
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        if path.exists():
+            content = path.read_text().strip()
+            if content:
+                return content
+        time.sleep(POLL_S)
+    sys.exit(f"Timed out after {timeout_s // 60} min waiting for {what} at {path}.")
+
+
+def prompt_mfa() -> str:
+    print(
+        f"MFA required. Check your email/authenticator, then write the code to\n"
+        f"  {MFA_FILE}\n"
+        f"(e.g.  echo 123456 > data/garmin_mfa_code.txt )",
+        flush=True,
+    )
+    return wait_for_file(MFA_FILE, MFA_TIMEOUT_S, "the MFA code")
+
+
+def shred(path: Path) -> None:
+    if path.exists():
+        path.write_text("0" * 256)
+        path.unlink()
 
 
 def main() -> None:
@@ -32,14 +67,22 @@ def main() -> None:
     if not supabase_url or not service_key:
         sys.exit("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set.")
 
-    email = input("Garmin email: ").strip()
-    password = getpass.getpass("Garmin password: ")
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    shred(MFA_FILE)  # never reuse a stale code
 
-    client = Garmin(email, password, prompt_mfa=lambda: input("MFA code: ").strip())
-    TOKEN_DIR.mkdir(parents=True, exist_ok=True)
-    client.login(str(TOKEN_DIR))
+    print(f"Waiting for credentials file {CREDS_FILE} ...", flush=True)
+    creds = json.loads(wait_for_file(CREDS_FILE, CREDS_TIMEOUT_S, "credentials"))
+    email, password = creds["email"], creds["password"]
+    print(f"Credentials received for {email}. Logging in to Garmin ...", flush=True)
 
-    tokens_json = client.client.dumps()
+    try:
+        client = Garmin(email, password, prompt_mfa=prompt_mfa)
+        TOKEN_DIR.mkdir(parents=True, exist_ok=True)
+        client.login(str(TOKEN_DIR))
+        tokens = json.loads(client.client.dumps())
+    finally:
+        shred(CREDS_FILE)
+        shred(MFA_FILE)
 
     resp = requests.post(
         f"{supabase_url}/rest/v1/garmin_token?on_conflict=id",
@@ -49,12 +92,11 @@ def main() -> None:
             "Content-Type": "application/json",
             "Prefer": "resolution=merge-duplicates",
         },
-        json=[{"id": True, "tokens": json.loads(tokens_json), "updated_at": "now()"}],
+        json=[{"id": True, "tokens": tokens, "updated_at": "now()"}],
         timeout=30,
     )
     resp.raise_for_status()
-    name = client.get_full_name() if hasattr(client, "get_full_name") else email
-    print(f"Logged in ({name}). Tokens saved to {TOKEN_DIR} and uploaded to Supabase.")
+    print(f"Success. Tokens saved to {TOKEN_DIR} and uploaded to Supabase.")
 
 
 if __name__ == "__main__":
