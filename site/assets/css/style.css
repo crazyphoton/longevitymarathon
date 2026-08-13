@@ -640,3 +640,7 @@ ins.revision-new {
 @media print {
   .site-header, .site-footer, .newsletter-block, .nav-toggle { display: none; }
 }
+
+/* Actual-mileage overlay on the planned weekly bar chart (build_site_data.py). */
+.barchart__track { position: relative; }
+.barchart__fill--actual { position: absolute; top: 50%; left: 0; transform: translateY(-50%); height: 0.32rem; border-radius: 2px; background: var(--color-ink); opacity: 0.7; }

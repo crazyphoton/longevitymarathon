@@ -1,0 +1,51 @@
+name: Build Site Data
+
+# Queries curated Supabase export views and rewrites the data-driven regions
+# of the static site (spec §13.8). Runs after the daily Garmin ingest, and on
+# demand after approving rows in Supabase.
+on:
+  schedule:
+    - cron: '45 19 * * *' # 03:45 Singapore time, after Garmin Ingest
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: build-site-data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install requests
+      - name: Regenerate site data
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: python scripts/build_site_data.py
+      - name: Commit and deploy if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet site/; then
+            echo "No site changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/
+          git commit -m "Refresh dashboard data from Supabase"
+          git push
+          # Pushes made with GITHUB_TOKEN do not trigger on:push workflows,
+          # so kick the Pages deploy explicitly.
+          gh workflow run deploy-pages.yml --ref main
