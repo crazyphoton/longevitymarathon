@@ -145,6 +145,10 @@ def daily_rows(client: Garmin, days: list[dt.date]) -> list[dict]:
                 "vo2max_run": vo2,
                 "raw": raw,
                 "updated_at": now,
+                # Author's decision 2026-08-14: daily wellness aggregates publish on
+                # arrival (exception to §13.2's manual gate, which still applies to
+                # activities and anything with location data).
+                "review_state": "approved",
             }
         )
     return rows
