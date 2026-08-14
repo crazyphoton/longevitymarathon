@@ -27,6 +27,8 @@ Voice: **a smart friend documenting a serious experiment.** First person is fine
 
 **Conversational, warm, human.** Personality, emotional reactions, mild humour, and small moments from daily life are welcome. Warmth comes from observation and candour, not forced friendliness. Don't attach a tidy moral to every paragraph — a moment can stay unresolved.
 
+**First person, never "the author."** The site's own voice says *I / me / my* — "what's happening to my health," not "the author's health." Referring to me as "the author" in site copy is banned; it's third-person posing and it distances the reader from the person actually running. Exceptions: legal boundary text (Terms, the medical-disclaimer banner) may stay deliberately impersonal ("one person's training and health data"), and other people (Dr. Reddy) naturally refer to me in the third person inside their own attributed commentary.
+
 **Meta and self-aware writing is allowed** when it reveals something real about the work or the thinking. The problem is *frivolous framing* — inventing a false assumption just to create a neat reversal.
 
 **Emotional texture without melodrama.** Name emotions in proportion to the event.
