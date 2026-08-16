@@ -189,20 +189,26 @@ def mileage_row(w: dict, max_target: float) -> str:
     underneath it."""
     target_pct = round(w["target_km"] / max_target * 100)
     tick_color = "#9fb8b0" if w["is_cutback"] else "#3e6e64"
+    # Styles are inlined so the chart renders correctly even against a stale
+    # cached stylesheet (GitHub Pages CDN holds CSS ~10 min past a deploy).
     track = (
-        f'<span class="barchart__marker" '
-        f'style="left:min({target_pct}%, calc(100% - 3px));background:{tick_color}"></span>'
+        f'<span class="barchart__marker" style="position:absolute;top:0;height:100%;'
+        f'width:3px;border-radius:1px;left:min({target_pct}%, calc(100% - 3px));'
+        f'background:{tick_color}"></span>'
     )
     val = f"{fmt(w['target_km'])} km"
     if w["actual_km"] > 0:
         actual_pct = min(100, round(w["actual_km"] / max_target * 100))
-        track = f'<span class="barchart__actual" style="width:{actual_pct}%"></span>' + track
+        track = (
+            f'<span class="barchart__actual" style="display:block;height:100%;'
+            f'width:{actual_pct}%;background:#26221c;opacity:.75;border-radius:2px"></span>'
+        ) + track
         done_pct = round(w["actual_km"] / w["target_km"] * 100)
         val = f"{fmt(w['actual_km'])} / {fmt(w['target_km'])} km ({done_pct}%)"
     return (
         '<div class="barchart__row">\n'
         f'          <span class="barchart__label">W{w["week_no"]}</span>\n'
-        f'          <span class="barchart__track">{track}</span>\n'
+        f'          <span class="barchart__track" style="position:relative">{track}</span>\n'
         f'          <span class="barchart__val">{val}</span>\n'
         "        </div>"
     )

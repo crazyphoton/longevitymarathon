@@ -459,7 +459,7 @@ ins.revision-new {
 .barchart__row { display: grid; grid-template-columns: 4.4rem 1fr 3.6rem; align-items: center; gap: 0.7rem; font-size: 0.82rem; }
 .barchart__label { color: var(--color-ink-soft); font-family: var(--font-mono); }
 .barchart__track { background: var(--color-bg-raised-2); border-radius: 2px; height: 0.85rem; overflow: hidden; }
-.barchart__fill { background: var(--color-accent); height: 100%; border-radius: 2px; }
+.barchart__fill { display: block; background: var(--color-accent); height: 100%; border-radius: 2px; }
 .barchart__fill--cutback { background: #9fb8b0; }
 .barchart__val { font-family: var(--font-mono); color: var(--color-ink-faint); text-align: right; }
 .barchart__legend { font-size: 0.82rem; color: var(--color-ink-faint); display: flex; gap: 1.4rem; margin-top: 0.6rem; }
