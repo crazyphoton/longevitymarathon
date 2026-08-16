@@ -7,8 +7,12 @@ activities and daily wellness, upserts them (never touching review_state, so
 curation decisions survive re-ingestion), and writes the refreshed token
 bundle back.
 
-Nothing here publishes anything: rows land as review_state='private' and only
-become visible to the site build after manual approval (spec §13.2).
+Publishing policy (spec §13.8 exceptions, 2026-08-14 and 2026-08-16): daily
+wellness aggregates and activities both auto-approve — wellness explicitly in
+daily_rows, activities via the table's 'approved' default. The upsert payload
+still omits review_state for activities, so a row manually flipped to
+'private' in Studio stays private across re-ingestion. Raw payloads (route,
+coordinates) are never exported either way.
 
 Requires: pip install garminconnect requests
 Env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, optional LOOKBACK_DAYS (default 7)
