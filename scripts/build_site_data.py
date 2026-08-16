@@ -222,8 +222,8 @@ def build_mileage(weeks: list[dict], pre_km: float = 0.0) -> str:
         intro = (
             '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v3 targets with\n'
             "      actual mileage layered on as the dark inner bar. Actuals count approved, published\n"
-            "      runs only, so a week can briefly show less than was really run. W0 is the 10&ndash;16 Aug\n"
-            "      week run under the v2 placeholder, before v3 week numbering began.</p>"
+            "      runs only, so a week can briefly show less than was really run. W0 is the running\n"
+            "      done under v2 (effective 1&ndash;16 Aug), before v3 week numbering began.</p>"
         )
     else:
         heading = f"      <h3>Planned weekly mileage, all {total} weeks</h3>"
@@ -500,7 +500,7 @@ def build_home_glance(weeks: list[dict], today: dt.date) -> str:
         status_note = f"All {total} weeks done &middot; training started 10 Aug 2026"
     else:
         status_value = f"Week 0 of {total}"
-        status_note = "Plan v3 starts Mon 17 Aug 2026; training began 10 Aug under v2"
+        status_note = "Plan v3 starts Mon 17 Aug 2026; the project began 1 Aug under v2"
 
     parts = [
         stat(
