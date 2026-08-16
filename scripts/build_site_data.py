@@ -183,15 +183,20 @@ def pre_plan_row(pre_km: float, max_target: float) -> str:
 
 
 def mileage_row(w: dict, max_target: float) -> str:
-    """One chart row. Bars scale to the peak week, so a completed small week
-    fills only part of the track — the (nn%) is the completion signal."""
-    pct = round(w["target_km"] / max_target * 100)
-    fill_class = "barchart__fill barchart__fill--cutback" if w["is_cutback"] else "barchart__fill"
-    track = f'<span class="{fill_class}" style="width:{pct}%"></span>'
+    """One chart row, one shared scale: the track spans 0 → peak week. The
+    week's target is a tick on the track (teal build / sage cutback) so the
+    ramp reads as marching ticks; what was actually run is the dark bar
+    underneath it."""
+    target_pct = round(w["target_km"] / max_target * 100)
+    tick_color = "#9fb8b0" if w["is_cutback"] else "#3e6e64"
+    track = (
+        f'<span class="barchart__marker" '
+        f'style="left:min({target_pct}%, calc(100% - 3px));background:{tick_color}"></span>'
+    )
     val = f"{fmt(w['target_km'])} km"
     if w["actual_km"] > 0:
         actual_pct = min(100, round(w["actual_km"] / max_target * 100))
-        track += f'<span class="barchart__fill--actual" style="width:{actual_pct}%"></span>'
+        track = f'<span class="barchart__actual" style="width:{actual_pct}%"></span>' + track
         done_pct = round(w["actual_km"] / w["target_km"] * 100)
         val = f"{fmt(w['actual_km'])} / {fmt(w['target_km'])} km ({done_pct}%)"
     return (
@@ -204,9 +209,18 @@ def mileage_row(w: dict, max_target: float) -> str:
 
 
 SCALE_NOTE = (
-    '      <p class="text-small" style="color:var(--color-ink-faint);">Bar lengths are scaled to\n'
-    "      the peak week, so a completed smaller week fills only part of its track &mdash; the\n"
-    "      percentage after each logged week is the completion signal.</p>"
+    '      <p class="text-small" style="color:var(--color-ink-faint);">One shared scale: every\n'
+    "      track runs from zero to the peak week. The tick is the week's target &mdash; watch it\n"
+    "      march right through the build and retreat through the taper &mdash; and the dark bar\n"
+    "      is what was actually run, with the percentage as the completion signal.</p>"
+)
+
+MILEAGE_LEGEND = (
+    '<div class="barchart__legend">'
+    '<span><span class="legend-swatch" style="background:#26221c;opacity:.75"></span>Actual (approved runs)</span>'
+    '<span><span class="legend-swatch" style="background:#3e6e64;width:0.25em"></span>Target, build week</span>'
+    '<span><span class="legend-swatch" style="background:#9fb8b0;width:0.25em"></span>Target, cutback week</span>'
+    "</div>"
 )
 
 
@@ -218,17 +232,7 @@ def build_mileage(weeks: list[dict], pre_km: float = 0.0) -> str:
     for w in weeks:
         rows.append(mileage_row(w, max_target))
 
-    legend = (
-        '<div class="barchart__legend">'
-        '<span><span class="legend-swatch" style="background:#3e6e64"></span>Planned build week</span>'
-        '<span><span class="legend-swatch" style="background:#9fb8b0"></span>Planned cutback week</span>'
-    )
-    if any_actual:
-        legend += (
-            '<span><span class="legend-swatch" style="background:#26221c;opacity:.7"></span>'
-            "Actual (approved runs)</span>"
-        )
-    legend += "</div>"
+    legend = MILEAGE_LEGEND
 
     total = len(weeks)
     if any_actual:
@@ -414,18 +418,9 @@ def build_plan_chart(weeks: list[dict], pre_km: float = 0.0) -> str:
     max_target = max(w["target_km"] for w in weeks)
     rows = [pre_plan_row(pre_km, max_target)] if pre_km > 0 else []
     rows += [mileage_row(w, max_target) for w in weeks]
-    legend = (
-        '<div class="barchart__legend">'
-        '<span><span class="legend-swatch" style="background:#3e6e64"></span>Planned build week</span>'
-        '<span><span class="legend-swatch" style="background:#9fb8b0"></span>Planned cutback week</span>'
-        '<span><span class="legend-swatch" style="background:#26221c;opacity:.7"></span>Actual (approved runs)</span>'
-        "</div>"
-    )
     chart = ('      <div class="barchart"><div class="barchart__rows">'
-             + "".join(rows) + "</div>" + legend + "</div>")
-    if any(w["actual_km"] > 0 for w in weeks):
-        chart += "\n" + SCALE_NOTE
-    return chart
+             + "".join(rows) + "</div>" + MILEAGE_LEGEND + "</div>")
+    return chart + "\n" + SCALE_NOTE
 
 
 def build_decisions(decisions: list[dict], weeks: list[dict]) -> str:

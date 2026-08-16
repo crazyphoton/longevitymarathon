@@ -644,6 +644,10 @@ ins.revision-new {
 /* Actual-mileage overlay on the planned weekly bar chart (build_site_data.py). */
 .barchart__track { position: relative; }
 .barchart__fill--actual { position: absolute; top: 50%; left: 0; transform: translateY(-50%); height: 0.32rem; border-radius: 2px; background: var(--color-ink); opacity: 0.7; }
+/* Single-bar mileage rows: actual as the full-height bar, the week's target as
+   a tick on the shared peak-scaled track. */
+.barchart__actual { display: block; height: 100%; border-radius: 2px; background: var(--color-ink); opacity: 0.75; }
+.barchart__marker { position: absolute; top: 0; height: 100%; width: 3px; border-radius: 1px; }
 
 /* Honeypot field for the newsletter form: invisible to humans, present in markup. */
 .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
