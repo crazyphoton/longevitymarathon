@@ -90,7 +90,7 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
     elif done >= len(weeks):
         weeks_note = f"All {total} weeks complete."
     else:
-        weeks_note = "Plan v3 starts Mon 17 Aug."
+        weeks_note = "Plan v3 began Mon 10 Aug."
     weeks_stat = stat(
         "Weeks completed", f"{done} <span class='stat__value--muted'>/ {total}</span>", weeks_note
     )
@@ -222,8 +222,8 @@ def build_mileage(weeks: list[dict], pre_km: float = 0.0) -> str:
         intro = (
             '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v3 targets with\n'
             "      actual mileage layered on as the dark inner bar. Actuals count approved, published\n"
-            "      runs only, so a week can briefly show less than was really run. W0 is the running\n"
-            "      done under v2 (effective 1&ndash;16 Aug), before v3 week numbering began.</p>"
+            "      runs only, so a week can briefly show less than was really run. Week 1 was adopted\n"
+            "      retroactively &mdash; run 10&ndash;16 Aug, before the v3 document existed.</p>"
         )
     else:
         heading = f"      <h3>Planned weekly mileage, all {total} weeks</h3>"
@@ -266,8 +266,8 @@ def build_sessions_table(sessions: list[dict], runs: list[dict], today: dt.date,
                          week: dict | None) -> str:
     if not week:
         return (
-            '      <p class="section__intro">Plan v3 starts Monday 17 August. The first week\'s\n'
-            "      day-by-day sessions will appear here when it does.</p>"
+            '      <p class="section__intro">No plan week is currently in progress; day-by-day\n'
+            "      sessions will appear when one starts.</p>"
         )
     start, end = week["start"], week["start"] + dt.timedelta(days=7)
     week_sessions = sorted(
@@ -494,19 +494,19 @@ def build_home_glance(weeks: list[dict], today: dt.date) -> str:
     total = len(weeks)
     if cur:
         status_value = f"Week {cur['week_no']} of {total}"
-        status_note = f"{escape(cur['phase'])} phase &middot; plan v3, effective 17 Aug 2026"
+        status_note = f"{escape(cur['phase'])} phase &middot; plan v3, Week 1 from 10 Aug 2026"
     elif done >= len(weeks):
         status_value = "Complete"
         status_note = f"All {total} weeks done &middot; training started 10 Aug 2026"
     else:
         status_value = f"Week 0 of {total}"
-        status_note = "Plan v3 starts Mon 17 Aug 2026; the project began 1 Aug under v2"
+        status_note = "Plan v3 runs from Mon 10 Aug 2026; the project began 1 Aug"
 
     parts = [
         stat(
             "Event",
             "BYD Singapore Marathon 2026",
-            "4 December 2026 &mdash; race day, Week 16 of the plan.",
+            "4 December 2026 &mdash; race day, Week 17 of the plan.",
             "stat__value",
         ),
         stat("Goal", "42.2 km in 5:00", "The one number the project is judged against."),
@@ -538,7 +538,7 @@ def build_home_progress(weeks: list[dict], runs: list[dict], today: dt.date) -> 
             intro = (
                 f"Day {day_num} of Week {cur['week_no']}. Nothing has been run yet under the\n"
                 "      current plan, so this strip mostly shows zeros and a target &mdash; that's what\n"
-                "      the start of a sixteen-week plan looks like."
+                "      the start of a seventeen-week plan looks like."
             )
         else:
             intro = (
@@ -561,9 +561,9 @@ def build_home_progress(weeks: list[dict], runs: list[dict], today: dt.date) -> 
             mileage_note = f"Target for Week {cur['week_no']}: {fmt(cur['target_km'])} km. Actual: awaiting the week's close."
     else:
         intro = (
-            "The sixteen-week plan is complete."
+            "The seventeen-week plan is complete."
             if done >= len(weeks)
-            else "Plan v3 starts Monday 17 August; last week's running happened under the v2 placeholder."
+            else "No plan week is in progress."
         )
         weeks_note = "&mdash;"
         sessions_value, sessions_note = "&mdash;", "No plan week in progress."

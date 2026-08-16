@@ -1,10 +1,10 @@
-# Adaptive Marathon Plan and Measurement Framework — v3 (16 weeks)
+# Adaptive Marathon Plan and Measurement Framework — v3 (17 weeks)
 
-A 16-week, decision-led system for progressing duration, preserving consistency, and adapting to real-world response.
+A 17-week, decision-led system for progressing duration, preserving consistency, and adapting to real-world response.
 
 **Core idea.** This is not a rigid mileage prescription. It is a control system: apply enough stress to drive adaptation, then use objective and subjective response data to progress, hold, reduce, substitute, or seek clinical review.
 
-**Event.** BYD Singapore Marathon, race day 4 December 2026. Week 1 starts Monday 17 August 2026; race week is Week 16 (30 Nov – 6 Dec).
+**Event.** BYD Singapore Marathon, race day Friday 4 December 2026. Week 1 is 10–16 August 2026 — run before this document existed and adopted retroactively (sessions recorded as run, not as planned). Week 2 starts Monday 17 August; race week is Week 17 (30 Nov – 6 Dec).
 
 | Plan parameter | Working assumption |
 |---|---|
@@ -20,17 +20,17 @@ Status: detailed working framework for runner, coach, doctor, physiotherapist, o
 
 v3 incorporates an exercise-physiology review and a coaching review of v2. The philosophy is unchanged; the corrections are:
 
-1. **Long run rebalanced against weekly volume.** v2 grew the long run to 30–32 km inside a 46–48 km week (63–67% of the week in one session — the classic recreational-marathoner injury signature). v3 caps the long run at **27–28 km or 3:15–3:30 on feet, whichever comes first**, and adds a **midweek medium-long run (10–14 km) from Week 6**, lifting peak weeks to 52–55 km and holding long-run share ≤ ~55%. Cumulative weekly time-on-feet builds marathon durability more safely than one maximal run; aerobic return beyond ~3 h is marginal relative to bone/tendon cost at this volume.
+1. **Long run rebalanced against weekly volume.** v2 grew the long run to 30–32 km inside a 46–48 km week (63–67% of the week in one session — the classic recreational-marathoner injury signature). v3 caps the long run at **27–28 km or 3:15–3:30 on feet, whichever comes first**, and adds a **midweek medium-long run (10–14 km) from Week 7**, lifting peak weeks to 52–55 km and holding long-run share ≤ ~55%. Cumulative weekly time-on-feet builds marathon durability more safely than one maximal run; aerobic return beyond ~3 h is marginal relative to bone/tendon cost at this volume.
 2. **Quality is a green-week default, not "optional."** "Optional" plus a conservative controller equals "never." Strides, steady blocks, and one short threshold/steady touch are now the default when status is green, and the first thing removed when amber (the amber system *is* the flexibility — no double hedging).
-3. **Marathon-pace calibration added.** Progressive MP blocks inside long runs (Week 11: 2×3 km; Week 13: 4–6 km continuous inside the dress rehearsal; Week 14: short MP blocks; Week 15: 3×2 km taper touches). Pacing errors in the opening 10 km are the top self-reported cause of blow-ups, and GI tolerance is intensity-dependent — neither can be rehearsed at easy effort.
-4. **Half-marathon tune-up in Week 10** at controlled effort, replacing that week's long run. It provides the pacing evidence the C-goal requires, race-morning logistics rehearsal, fueling under race stress, and a confidence deposit.
+3. **Marathon-pace calibration added.** Progressive MP blocks inside long runs (Week 12: 2×3 km; Week 14: 4–6 km continuous inside the dress rehearsal; Week 15: short MP blocks; Week 16: 3×2 km taper touches). Pacing errors in the opening 10 km are the top self-reported cause of blow-ups, and GI tolerance is intensity-dependent — neither can be rehearsed at easy effort.
+4. **Half-marathon tune-up in Week 11** at controlled effort, replacing that week's long run. It provides the pacing evidence the C-goal requires, race-morning logistics rehearsal, fueling under race stress, and a confidence deposit.
 5. **Quantified adaptation triggers.** Wearable ambers now have thresholds and require symptom corroboration (§9). Wearable-only signals without symptoms default to *green-easy*, not reduction. The long-run abort rule uses a decoupling number instead of "drifts unexpectedly."
-6. **Anti-under-loading guards.** The controller was asymmetrically conservative: many paths to reduce, one vague path to progress. v3 defines a **minimum viable peak** (at least one fueled ≥26 km long run completed by end of Week 13) and replaces Week 13's "skip if *any* gate not green" with binary, checkable gates.
+6. **Anti-under-loading guards.** The controller was asymmetrically conservative: many paths to reduce, one vague path to progress. v3 defines a **minimum viable peak** (at least one fueled ≥26 km long run completed by end of Week 14) and replaces the peak week's "skip if *any* gate not green" with binary, checkable gates.
 7. **Amber split into life-amber and tissue-amber** with a single action each, plus a circuit-breaker (3 ambers in 7 days, or 2 consecutive reduced weeks → forced structured review, not another silent reduction).
-8. **Fueling modernized.** Working target ≥60 g carbohydrate/hour (trained toward 90 g/h with mixed glucose+fructose sources across Weeks 9–13); explicit carb-load (10–12 g/kg/day for 36–48 h) and race-morning meal (1–4 g/kg, finished 1–4 h before start).
-9. **Contingency table and Week 12 go/no-go.** Written rules for missed days/weeks, and a scheduled decision where the race goal (time / completion / run-walk / defer) is chosen from evidence.
+8. **Fueling modernized.** Working target ≥60 g carbohydrate/hour (trained toward 90 g/h with mixed glucose+fructose sources across Weeks 10–14); explicit carb-load (10–12 g/kg/day for 36–48 h) and race-morning meal (1–4 g/kg, finished 1–4 h before start).
+9. **Contingency table and Week 13 go/no-go.** Written rules for missed days/weeks, and a scheduled decision where the race goal (time / completion / run-walk / defer) is chosen from evidence.
 10. **Minimum viable dataset.** The capture system now degrades gracefully: two fields (post-run RPE, next-morning status) keep the control loop alive; everything else is optional enrichment. Capture completeness itself feeds the data-confidence flag.
-11. **Confidence layer.** Farthest-ever runs are flagged as milestones, Week 13 is named the dress-rehearsal anchor, the weekly review now records *what went right*, and the race plan includes segmentation and a late-race mental plan.
+11. **Confidence layer.** Farthest-ever runs are flagged as milestones, Week 14 is named the dress-rehearsal anchor, the weekly review now records *what went right*, and the race plan includes segmentation and a late-race mental plan.
 12. **Time caps.** All long runs carry a time cap; distance targets are secondary to time on feet.
 
 Heat note: training happens in Singapore, the race climate — chronic heat acclimation is built in. Keep long runs at race start time where practical so heat exposure matches race conditions; the acute heat-avoidance rules (§11.2) still apply on extreme days.
@@ -142,8 +142,8 @@ Adapt — proceed, hold, reduce, substitute, or request review. Change one progr
 | Medical history/pre-participation review | Before Week 1; sooner with symptoms/known disease | Review personal/family history, medications, prior heat illness, cardiopulmonary/metabolic concerns, and need for further evaluation. | Recommended; clinician sets scope |
 | Sports physio or podiatry | Before/early Weeks 1–2; repeat if trend changes | Establish Achilles/heel/foot status, functional baseline, footwear/skin risks, and issue-specific loading. | Recommended with prior concerns |
 | Standardized easy field run | Baseline; every 2–4 weeks | Track HR–pace–RPE and drift under comparable conditions. | Core |
-| Half-marathon tune-up race | Week 10 | Pacing evidence for the marathon plan; logistics, fueling, and confidence rehearsal under race stress. | Core |
-| Threshold field/lab test | Baseline after stable training; optional repeat Weeks 12–14 | Set individualized intensity anchors; avoid generic HR caps. | Useful, optional |
+| Half-marathon tune-up race | Week 11 | Pacing evidence for the marathon plan; logistics, fueling, and confidence rehearsal under race stress. | Core |
+| Threshold field/lab test | Baseline after stable training; optional repeat Weeks 13–15 | Set individualized intensity anchors; avoid generic HR caps. | Useful, optional |
 | VO2 max/metabolic test | Baseline and near end if research value justifies | Outcome measure; not required for weekly decisions. | Optional |
 | Gait/biomechanical review | If recurrent symptoms/gait change or clinician recommends | Investigate a specific problem, not a routine pass/fail screen. | Problem-led |
 | Basic laboratory tests | Only if clinician indicates from history/symptoms | Investigate fatigue, deficiency, or medical concern. | Clinician-directed |
@@ -161,7 +161,7 @@ Use individualized zones from a valid threshold assessment when available. Other
 | Steady/marathon effort | RPE 3–4; controlled; short phrases; never forced | Specific rhythm, pacing calibration, fueling practice at race intensity | Default in scheduled blocks when green (§8); removed when amber |
 | Threshold/controlled hard | RPE 6–7; sustainable intervals, not racing; individualized | Efficient aerobic-power maintenance | Default ≤1 short session/week when green; first thing removed when amber |
 | Strides | 10–20 s relaxed-fast; full recovery; smooth | Neuromuscular economy | Default 4–8 reps 1–2×/week when symptom-free |
-| Race pace | Derived from the Week 10 half-marathon result, course/heat, conservative execution | Race confidence and calibration | Progressive blocks Weeks 11–15 (§8) |
+| Race pace | Derived from the Week 11 half-marathon result, course/heat, conservative execution | Race confidence and calibration | Progressive blocks Weeks 12–16 (§8) |
 
 **Quality default rule.** Scheduled quality is the *default when green* and the *first casualty when amber*. Skipping quality on a green day is a plan deviation to record, same as skipping a run. The amber system is the flexibility mechanism; the plan does not hedge twice.
 
@@ -171,39 +171,40 @@ Use individualized zones from a valid threshold assessment when available. Other
 
 | Phase | Weeks | Primary priority | May progress | Constrained |
 |---|---|---|---|---|
-| Stabilize/calibrate | 1–4 | Consistency, data quality, issue stability, easy intensity | Small volume or long-run steps after green response | No aggressive quality; one lever only |
-| Build duration | 5–8 | Time on feet, midweek volume, fueling habits | Long run first; midweek medium-long run from Week 6 | Intensity easy/controlled; Week 8 absorbs |
-| Specific durability | 9–13 | Long-run durability, race systems, MP calibration, late-run control | One specific lever; peak after gates | Quality sacrificed before continuity |
-| Consolidate/taper | 14–16 | Freshness, rhythm, confidence | No fitness-building progression | Volume down; intensity maintained in small doses; no experiments |
+| Stabilize/calibrate | 1–5 | Consistency, data quality, issue stability, easy intensity | Small volume or long-run steps after green response | No aggressive quality; one lever only |
+| Build duration | 6–9 | Time on feet, midweek volume, fueling habits | Long run first; midweek medium-long run from Week 7 | Intensity easy/controlled; Week 9 absorbs |
+| Specific durability | 10–14 | Long-run durability, race systems, MP calibration, late-run control | One specific lever; peak after gates | Quality sacrificed before continuity |
+| Consolidate/taper | 15–17 | Freshness, rhythm, confidence | No fitness-building progression | Volume down; intensity maintained in small doses; no experiments |
 
-# 8. Detailed 16-week adaptive plan
+# 8. Detailed 17-week adaptive plan
 
-Targets are envelopes, not entitlements. Week 16 training kilometres exclude the marathon. Weeks 1–5 default to four runs; from Week 6 a midweek medium-long run (MLR) makes five runs the default — it exists to spread load, not to pile on. Every long run carries a time cap; stop at the cap even if the distance target is unmet, and record the shortfall (do not make it up).
+Targets are envelopes, not entitlements. Week 17 training kilometres exclude the marathon. Week 1 is retroactive (see §8 table); Weeks 2–6 default to four runs; from Week 7 a midweek medium-long run (MLR) makes five runs the default — it exists to spread load, not to pile on. Every long run carries a time cap; stop at the cap even if the distance target is unmet, and record the shortfall (do not make it up).
 
-**Minimum viable peak (anti-under-loading guard).** By the end of Week 13, at least one fueled long run ≥26 km must be completed. If ambers have prevented it, the Week 12 go/no-go (below) must explicitly choose: attempt it in Week 13, adopt a run-walk completion strategy, or re-scope the goal. Silently arriving at the taper without it is not an option.
+**Minimum viable peak (anti-under-loading guard).** By the end of Week 14, at least one fueled long run ≥26 km must be completed. If ambers have prevented it, the Week 13 go/no-go (below) must explicitly choose: attempt it in Week 14, adopt a run-walk completion strategy, or re-scope the goal. Silently arriving at the taper without it is not an option.
 
-**Milestones.** Weeks 3, 5, 6, 7, 9, 11, and 13 each contain a farthest-ever run — flag and celebrate them. Week 10 is the tune-up race. Week 13 is the dress rehearsal: the confidence anchor for race day. "Finish with reserves" is the instruction for every one of them.
+**Milestones.** Weeks 4, 6, 7, 8, 10, 12, and 14 each contain a farthest-ever run — flag and celebrate them. Week 11 is the tune-up race. Week 14 is the dress rehearsal: the confidence anchor for race day. "Finish with reserves" is the instruction for every one of them.
 
 | Wk | Dates | Focus | Km | Long (cap) | MLR | Quality (default when green) | Operational focus | Gate (binary, checkable) |
 |---|---|---|---|---|---|---|---|---|
-| 1 | 17–23 Aug | Stabilize | 34–35 | 15 (1:50) | — | 4×15 s strides ×1 | Baselines; capture reliability; zone anchors. | Next-morning: stiffness <10 min, no pain >2/10, normal stairs → proceed. |
-| 2 | 24–30 Aug | Stabilize | 35–36 | 16 (2:00) | — | Strides ×1 | Fuel practice on runs >75 min (start gut training). | Same next-morning checks pass after long run → increase next week. |
-| 3 | 31 Aug–6 Sep | Duration | 37–38 | 18 (2:10) | — | Strides ×2 | Long run is sole progression. Farthest-ever #1. | Recovery to baseline by 48 h after long run → proceed; else hold. |
-| 4 | 7–13 Sep | Absorb | 31–33 | 13–14 (1:40) | — | Strides ×1 | Review trends and zone anchors. Never make up missed distance. | Two of Weeks 1–3 fully green → advance to Build. |
-| 5 | 14–20 Sep | Build duration | 38–40 | 19 (2:20) | — | 10 min steady finish on a midweek run | Fuel/fluid/equipment rehearsal; sweat-rate test. | No steady work if next-morning above baseline. |
-| 6 | 21–27 Sep | Build duration | 42–44 | 20 (2:25) | 10 | 2×8 min steady inside MLR | MLR begins — spreads load, drops long-run share. | MLR added = the week's lever; long run holds. |
-| 7 | 28 Sep–4 Oct | Build duration | 44–46 | 22 (2:40) | 11 | Strides ×2 | Log GI, skin, foot, late mechanics. Fuel ≥40 g/h on long run. | Shorten if fueling fails or symptoms worsen. |
-| 8 | 5–11 Oct | Absorb/reassess | 36–38 | 16 (2:00) | 10 | Strides ×1 | Review aerobic and durability trends; confirm HM logistics. | Weeks 5–7 absorbed (recovery ≤48 h each) → durability phase. |
-| 9 | 12–18 Oct | Specific durability | 46–48 | 24 (2:50) | 12 | 3×10 min steady (separate day) | Fuel every long run ≥50 g/h; settle race gear. | No two hard stressors within 48 h. |
-| 10 | 19–25 Oct | Tune-up race | 44–46 | HM race 21.1 | 12 | Half marathon at controlled effort (not all-out) | Race-morning rehearsal: breakfast, logistics, fuel under race stress. Result sets the marathon pacing plan. | Race only if green; if amber, run it as a controlled long run instead. |
-| 11 | 26 Oct–1 Nov | Specific durability | 50–52 | 26 (3:05) | 12–13 | 2×3 km at marathon effort inside long run | First MP-in-long-run calibration; fuel ≥60 g/h. Farthest-ever; counts toward minimum viable peak. | Abort MP blocks (continue easy) if back-half decoupling >10% vs comparable conditions. |
-| 12 | 2–8 Nov | Absorb + **go/no-go** | 40–42 | 18–20 (2:25) | 10 | 3×6 min threshold (one session) | Fix race-system failures before peak. **Formal decision from evidence: time goal / completion / run-walk / defer.** Record it. | Go/no-go recorded with rationale → peak week unlocked. |
-| 13 | 9–15 Nov | **Peak / dress rehearsal** | 52–55 | 27–28 (3:15–3:30) | 13–14 | 4–6 km continuous at marathon effort inside long run | Full dress rehearsal: race breakfast, kit, anti-chafe, fuel ≥60 g/h, race start time. Finish with reserves. | Proceed if: no red flags, pain ≤2/10 stable, last long run recovered ≤48 h. Wearable-only ambers do not cancel this run — convert MP to easy instead. |
-| 14 | 16–22 Nov | Consolidate | 44–46 | 22–23 (2:45) | 12 | 2×2 km at marathon effort | Confirm race plan; strength maintenance; no new anything. | No new test, gear, fuel, or hard workout. |
-| 15 | 23–29 Nov | Taper | 32–35 | 16 (2:00) | 8–10 | 3×2 km at marathon effort | Volume down, intensity maintained in small doses; preserve routine/sleep. | Do not compensate for missed work. |
-| 16 | 30 Nov–6 Dec | Race week | 14–18 + race | 42.2 race (4 Dec) | — | 2×1.5 km MP early week + strides | Freshness, logistics, carb load 10–12 g/kg/day Wed–Thu, hydration. | Red flag overrides participation. |
+| 1 | 10–16 Aug | Stabilize (retro) | 31 (as run) | 12.4 (as run) | — | — | Adopted retroactively: run before this document existed, under the starting plan's grid. Sessions recorded as run, not as planned. | — |
+| 2 | 17–23 Aug | Stabilize | 34–35 | 15 (1:50) | — | 4×15 s strides ×1 | Baselines; capture reliability; zone anchors. | Next-morning: stiffness <10 min, no pain >2/10, normal stairs → proceed. |
+| 3 | 24–30 Aug | Stabilize | 35–36 | 16 (2:00) | — | Strides ×1 | Fuel practice on runs >75 min (start gut training). | Same next-morning checks pass after long run → increase next week. |
+| 4 | 31 Aug–6 Sep | Duration | 37–38 | 18 (2:10) | — | Strides ×2 | Long run is sole progression. Farthest-ever #1. | Recovery to baseline by 48 h after long run → proceed; else hold. |
+| 5 | 7–13 Sep | Absorb | 31–33 | 13–14 (1:40) | — | Strides ×1 | Review trends and zone anchors. Never make up missed distance. | Two of Weeks 2–4 fully green → advance to Build. |
+| 6 | 14–20 Sep | Build duration | 38–40 | 19 (2:20) | — | 10 min steady finish on a midweek run | Fuel/fluid/equipment rehearsal; sweat-rate test. | No steady work if next-morning above baseline. |
+| 7 | 21–27 Sep | Build duration | 42–44 | 20 (2:25) | 10 | 2×8 min steady inside MLR | MLR begins — spreads load, drops long-run share. | MLR added = the week's lever; long run holds. |
+| 8 | 28 Sep–4 Oct | Build duration | 44–46 | 22 (2:40) | 11 | Strides ×2 | Log GI, skin, foot, late mechanics. Fuel ≥40 g/h on long run. | Shorten if fueling fails or symptoms worsen. |
+| 9 | 5–11 Oct | Absorb/reassess | 36–38 | 16 (2:00) | 10 | Strides ×1 | Review aerobic and durability trends; confirm HM logistics. | Weeks 6–8 absorbed (recovery ≤48 h each) → durability phase. |
+| 10 | 12–18 Oct | Specific durability | 46–48 | 24 (2:50) | 12 | 3×10 min steady (separate day) | Fuel every long run ≥50 g/h; settle race gear. | No two hard stressors within 48 h. |
+| 11 | 19–25 Oct | Tune-up race | 44–46 | HM race 21.1 | 12 | Half marathon at controlled effort (not all-out) | Race-morning rehearsal: breakfast, logistics, fuel under race stress. Result sets the marathon pacing plan. | Race only if green; if amber, run it as a controlled long run instead. |
+| 12 | 26 Oct–1 Nov | Specific durability | 50–52 | 26 (3:05) | 12–13 | 2×3 km at marathon effort inside long run | First MP-in-long-run calibration; fuel ≥60 g/h. Farthest-ever; counts toward minimum viable peak. | Abort MP blocks (continue easy) if back-half decoupling >10% vs comparable conditions. |
+| 13 | 2–8 Nov | Absorb + **go/no-go** | 40–42 | 18–20 (2:25) | 10 | 3×6 min threshold (one session) | Fix race-system failures before peak. **Formal decision from evidence: time goal / completion / run-walk / defer.** Record it. | Go/no-go recorded with rationale → peak week unlocked. |
+| 14 | 9–15 Nov | **Peak / dress rehearsal** | 52–55 | 27–28 (3:15–3:30) | 13–14 | 4–6 km continuous at marathon effort inside long run | Full dress rehearsal: race breakfast, kit, anti-chafe, fuel ≥60 g/h, race start time. Finish with reserves. | Proceed if: no red flags, pain ≤2/10 stable, last long run recovered ≤48 h. Wearable-only ambers do not cancel this run — convert MP to easy instead. |
+| 15 | 16–22 Nov | Consolidate | 44–46 | 22–23 (2:45) | 12 | 2×2 km at marathon effort | Confirm race plan; strength maintenance; no new anything. | No new test, gear, fuel, or hard workout. |
+| 16 | 23–29 Nov | Taper | 32–35 | 16 (2:00) | 8–10 | 3×2 km at marathon effort | Volume down, intensity maintained in small doses; preserve routine/sleep. | Do not compensate for missed work. |
+| 17 | 30 Nov–6 Dec | Race week | 14–18 + race | 42.2 race (4 Dec) | — | 2×1.5 km MP early week + strides | Freshness, logistics, carb load 10–12 g/kg/day Wed–Thu, hydration. | Red flag overrides participation. |
 
-Long-run share check: Week 11 → 26/50–52 = 50–52%. Week 13 → 27–28/52–55 = 51–53%. The v2 peak (32/46–48 = 67%) no longer exists anywhere in the plan.
+Long-run share check: Week 12 → 26/50–52 = 50–52%. Week 14 → 27–28/52–55 = 51–53%. The v2 peak (32/46–48 = 67%) no longer exists anywhere in the plan.
 
 ## 8.1 Typical weekly rhythm
 
@@ -211,9 +212,9 @@ Long-run share check: Week 11 → 26/50–52 = 50–52%. Week 13 → 27–28/52�
 |---|---|---|
 | Mon | Rest or mobility/rehab | Post-long-run assessment day. |
 | Tue | Easy run + strength A | Avoid maximal strength soreness. |
-| Wed | Medium-long run (from Week 6); rest or short easy before that | The MLR is load-spreading, not load-adding; it is the first run shortened when reducing. |
+| Wed | Medium-long run (from Week 7); rest or short easy before that | The MLR is load-spreading, not load-adding; it is the first run shortened when reducing. |
 | Thu | Quality (steady/threshold/MP-prep) or easy | Quality default when green; easy/substitute otherwise. |
-| Fri | Rest + strength B | Reduce lower-body volume from Week 11. Strength B is load-bearing for this plan — its absence must be recorded, not waved through. |
+| Fri | Rest + strength B | Reduce lower-body volume from Week 12. Strength B is load-bearing for this plan — its absence must be recorded, not waved through. |
 | Sat | Short easy + strides | No fatigue accumulation before long run. |
 | Sun | Long run / rehearsal | Duration, fuel, heat, equipment, next-morning response. Group option: share alternating Sunday long runs — accountability is a training input. |
 
@@ -264,10 +265,10 @@ Pain numbers are not universal clearance thresholds. Character, location, trend,
 
 | Phase | Frequency | Emphasis | Guardrails |
 |---|---|---|---|
-| Weeks 1–8 | 2×/week, 30–45 min | Squat/lunge; hinge; straight/bent-knee calf; hip; hamstring; trunk; foot as indicated. | 2–4 sets; 2–3 reps in reserve; no failure. |
-| Weeks 9–10 | 2×/week | Maintain strength; issue-specific capacity. | No novel DOMS before long run or the Week 10 race. |
-| Weeks 11–14 | 1–2×/week | Maintain intensity; reduce sets/accessories. | Movement quality over volume. |
-| Weeks 15–16 | 1 brief session, then stop heavy work before race | Familiar light work, mobility, activation. | No heavy eccentric novelty. |
+| Weeks 1–9 | 2×/week, 30–45 min | Squat/lunge; hinge; straight/bent-knee calf; hip; hamstring; trunk; foot as indicated. | 2–4 sets; 2–3 reps in reserve; no failure. |
+| Weeks 10–11 | 2×/week | Maintain strength; issue-specific capacity. | No novel DOMS before long run or the Week 11 race. |
+| Weeks 12–15 | 1–2×/week | Maintain intensity; reduce sets/accessories. | Movement quality over volume. |
+| Weeks 16–17 | 1 brief session, then stop heavy work before race | Familiar light work, mobility, activation. | No heavy eccentric novelty. |
 
 The plan's modest running volume is *justified by* the strength work — skipping strength B for three straight weeks converts this into a low-mileage plan with a large long run and nothing propping it up. Track strength completion as a first-class adherence metric.
 
@@ -279,14 +280,14 @@ The plan's modest running volume is *justified by* the strength work — skippin
 
 | Weeks | Long-run intake target | Notes |
 |---|---|---|
-| 2–5 | 30–40 g carbohydrate/hour | Establish habit and tolerance on runs >75 min; record source, timing, water, GI response. |
-| 6–8 | 40–50 g/h | Introduce the intended race product. |
-| 9–10 | ≥50 g/h | Week 10 HM: practice race-frequency intake under race stress. |
-| 11–13 | **≥60 g/h, trained toward 75–90 g/h** using multiple transportable carbohydrates (glucose+fructose) as tolerated | This is the race dose for a 4–5 h finisher; 30 g/h is a bonk-management dose, not a race dose. |
-| 14–16 | Race dose, rehearsed and locked | Nothing new after Week 13. |
+| 2–6 | 30–40 g carbohydrate/hour | Establish habit and tolerance on runs >75 min; record source, timing, water, GI response. |
+| 7–9 | 40–50 g/h | Introduce the intended race product. |
+| 10–11 | ≥50 g/h | Week 11 HM: practice race-frequency intake under race stress. |
+| 12–14 | **≥60 g/h, trained toward 75–90 g/h** using multiple transportable carbohydrates (glucose+fructose) as tolerated | This is the race dose for a 4–5 h finisher; 30 g/h is a bonk-management dose, not a race dose. |
+| 15–17 | Race dose, rehearsed and locked | Nothing new after Week 14. |
 
-- Rehearse the pre-run meal under race-like conditions from Week 9.
-- **Carb load:** 10–12 g/kg/day for the final 36–48 h before the race (Wednesday–Thursday of race week). **Race morning:** 1–4 g/kg, finished 1–4 h before the start — both rehearsed before long runs in Weeks 10 and 13.
+- Rehearse the pre-run meal under race-like conditions from Week 10.
+- **Carb load:** 10–12 g/kg/day for the final 36–48 h before the race (Wednesday–Thursday of race week). **Race morning:** 1–4 g/kg, finished 1–4 h before the start — both rehearsed before long runs in Weeks 11 and 14.
 - After demanding runs, prioritize normal food, carbohydrate replacement, protein, fluids, and sleep. Persistent inability to eat or rehydrate needs review.
 
 ## 11.2 Hydration and heat
@@ -304,7 +305,7 @@ The plan's modest running volume is *justified by* the strength work — skippin
 
 ## 11.4 Energy availability (proactive weekly check)
 
-Under-fueling is the major upstream driver of bone stress injury during exactly the weeks (9–13) this plan loads hardest. The weekly review asks, every week: appetite normal? body-mass trend stable? (where relevant: menstrual function normal?) unusual cold intolerance, sleep disturbance, or motivation loss? Two consecutive concerning weeks → dietitian/medical review, before symptoms, not after.
+Under-fueling is the major upstream driver of bone stress injury during exactly the weeks (10–14) this plan loads hardest. The weekly review asks, every week: appetite normal? body-mass trend stable? (where relevant: menstrual function normal?) unusual cold intolerance, sleep disturbance, or motivation loss? Two consecutive concerning weeks → dietitian/medical review, before symptoms, not after.
 
 # 12. Recovery and illness
 
@@ -356,14 +357,14 @@ A doctor may set stricter boundaries based on age, history, medication, examinat
 
 - Confirm health, logistics, weather, start time, transport, sleep, breakfast, gear, anti-chafe, fuel, fluid access, and emergency contacts.
 - Carb load Wednesday–Thursday (10–12 g/kg/day); race-morning meal 1–4 g/kg finished 1–4 h before start — both already rehearsed.
-- Run the opening by conservative effort calibrated from the Week 10 half and the Week 11–14 MP blocks — not adrenaline or watch prediction; adjust for heat/course.
+- Run the opening by conservative effort calibrated from the Week 11 half and the Week 12–15 MP blocks — not adrenaline or watch prediction; adjust for heat/course.
 - Use rehearsed fuel from early in the race at the trained rate (≥60 g/h); do not wait for depletion or try untested products.
 - Use lap-average pace/effort and body signals; ignore transient GPS errors.
-- **Segment the race:** 0–10 km settle (deliberately conservative, fuel from 20–30 min); 10–25 km rhythm (locked MP effort, fuel on schedule); 25–35 km work (the part rehearsed in Weeks 11–13 — expect it to feel like the dress rehearsal's final blocks); 35–42 km execute (shorter mental chunks: next aid station, next km; use the prepared phrases/mantras from training).
-- **If the goal slips mid-race:** drop one level in the goal hierarchy and execute that level well — pre-deciding this is part of the Week 12 go/no-go.
+- **Segment the race:** 0–10 km settle (deliberately conservative, fuel from 20–30 min); 10–25 km rhythm (locked MP effort, fuel on schedule); 25–35 km work (the part rehearsed in Weeks 12–14 — expect it to feel like the dress rehearsal's final blocks); 35–42 km execute (shorter mental chunks: next aid station, next km; use the prepared phrases/mantras from training).
+- **If the goal slips mid-race:** drop one level in the goal hierarchy and execute that level well — pre-deciding this is part of the Week 13 go/no-go.
 - If symptoms cross a red boundary, stop and seek assistance; completion is subordinate to safety.
 
-**Race goal hierarchy.** A-goal: healthy start and controlled completion. B-goal: execute pacing, fueling, and heat strategy. C-goal: the time target chosen at the Week 12 go/no-go, only if the Week 10 half and MP-block evidence support it.
+**Race goal hierarchy.** A-goal: healthy start and controlled completion. B-goal: execute pacing, fueling, and heat strategy. C-goal: the time target chosen at the Week 13 go/no-go, only if the Week 11 half and MP-block evidence support it.
 
 # 16. Post-race recovery and evaluation
 
