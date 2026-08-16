@@ -45,6 +45,12 @@ def num(v) -> float:
     return float(v) if v is not None else 0.0
 
 
+def hm(seconds: float) -> str:
+    """Seconds → h:mm."""
+    m = round(seconds / 60)
+    return f"{m // 60}:{m % 60:02d}"
+
+
 def fmt(v: float) -> str:
     return f"{round(v, 1):g}"
 
@@ -118,14 +124,32 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
         note = run_date.strftime("%a %d %b").replace(" 0", " ")
         longest_stat = stat(
             "Longest run so far",
-            f"{fmt(num(longest['distance_km']))} km",
-            f"{note}" + (f", Week {wk}." if wk else "."),
+            f"{fmt(num(longest['distance_km']))} km &middot; {hm(num(longest.get('duration_s')))}",
+            f"{note}" + (f", Week {wk}." if wk else ". Plan v3 caps long runs by time, not just distance."),
         )
     else:
         longest_stat = stat(
             "Longest run so far",
             "&mdash;",
-            "Awaiting Data. First long run: Sat 15 Aug.",
+            "Awaiting Data.",
+            "stat__value mono stat__value--muted",
+        )
+
+    week_runs = [
+        r for r in runs
+        if current and current["start"] <= dt.date.fromisoformat(r["run_date"]) < current["start"] + dt.timedelta(days=7)
+    ] if current else []
+    if week_runs:
+        feet_stat = stat(
+            "Time on feet this week",
+            hm(sum(num(r.get("duration_s")) for r in week_runs)),
+            "Duration is the primary lever in plan v3; distance is context.",
+        )
+    else:
+        feet_stat = stat(
+            "Time on feet this week",
+            "&mdash;",
+            "Duration is the primary lever in plan v3; distance is context.",
             "stat__value mono stat__value--muted",
         )
 
@@ -137,15 +161,32 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
         "stat__value stat__value--muted",
     )
 
-    parts = [target_stat, phase_stat, weeks_stat, sessions_stat, longest_stat, readiness_stat]
+    parts = [target_stat, phase_stat, weeks_stat, sessions_stat, feet_stat, longest_stat, readiness_stat]
     return '      <div class="stat-strip">' + "".join(parts) + "</div>"
 
 
-def build_mileage(weeks: list[dict]) -> str:
-    max_target = max(w["target_km"] for w in weeks)
-    any_actual = any(w["actual_km"] > 0 for w in weeks)
+def pre_plan_km(weeks: list[dict], runs: list[dict]) -> float:
+    """Approved kilometres run before v3 Week 1 (the 10–16 Aug v2 week)."""
+    start = min(w["start"] for w in weeks)
+    return sum(num(r["distance_km"]) for r in runs if dt.date.fromisoformat(r["run_date"]) < start)
 
-    rows = []
+
+def pre_plan_row(pre_km: float, max_target: float) -> str:
+    pct = min(100, round(pre_km / max_target * 100))
+    return (
+        '<div class="barchart__row">\n'
+        '          <span class="barchart__label">W0</span>\n'
+        f'          <span class="barchart__track"><span class="barchart__fill--actual" style="width:{pct}%"></span></span>\n'
+        f'          <span class="barchart__val">{fmt(pre_km)} km run under v2</span>\n'
+        "        </div>"
+    )
+
+
+def build_mileage(weeks: list[dict], pre_km: float = 0.0) -> str:
+    max_target = max(w["target_km"] for w in weeks)
+    any_actual = any(w["actual_km"] > 0 for w in weeks) or pre_km > 0
+
+    rows = [pre_plan_row(pre_km, max_target)] if pre_km > 0 else []
     for w in weeks:
         pct = round(w["target_km"] / max_target * 100)
         fill_class = "barchart__fill barchart__fill--cutback" if w["is_cutback"] else "barchart__fill"
@@ -181,7 +222,8 @@ def build_mileage(weeks: list[dict]) -> str:
         intro = (
             '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v3 targets with\n'
             "      actual mileage layered on as the dark inner bar. Actuals count approved, published\n"
-            "      runs only, so a week can briefly show less than was really run.</p>"
+            "      runs only, so a week can briefly show less than was really run. W0 is the 10&ndash;16 Aug\n"
+            "      week run under the v2 placeholder, before v3 week numbering began.</p>"
         )
     else:
         heading = f"      <h3>Planned weekly mileage, all {total} weeks</h3>"
@@ -283,9 +325,76 @@ def build_sessions_table(sessions: list[dict], runs: list[dict], today: dt.date,
     )
 
 
-def build_plan_chart(weeks: list[dict]) -> str:
-    max_target = max(w["target_km"] for w in weeks)
+def build_load_table(load: list[dict], runs: list[dict], weeks: list[dict], today: dt.date) -> str:
+    """Duration-first weekly load table: time on feet, longest-run duration,
+    long-run share, weekly session-RPE load, amber days. Shows W0 (the v2
+    week) plus every started v3 week."""
+    start1 = min(w["start"] for w in weeks)
+    pre = [r for r in runs if dt.date.fromisoformat(r["run_date"]) < start1]
+
+    def row(label, target, km, minutes, longest_min, share, sload, ambers):
+        return (
+            f"          <tr><td class='mono'>{label}</td>"
+            f"<td class='mono'>{target}</td>"
+            f"<td class='mono'>{km}</td>"
+            f"<td class='mono'>{minutes}</td>"
+            f"<td class='mono'>{longest_min}</td>"
+            f"<td class='mono'>{share}</td>"
+            f"<td class='mono'>{sload}</td>"
+            f"<td class='mono'>{ambers}</td></tr>"
+        )
+
     rows = []
+    if pre:
+        pre_secs = sum(num(r.get("duration_s")) for r in pre)
+        pre_longest = max(num(r.get("duration_s")) for r in pre)
+        pre_km_total = sum(num(r["distance_km"]) for r in pre)
+        pre_share = round(max(num(r["distance_km"]) for r in pre) / pre_km_total * 100) if pre_km_total else 0
+        rows.append(row("W0 (v2)", "&mdash;", f"{fmt(pre_km_total)} km", hm(pre_secs),
+                        hm(pre_longest), f"{pre_share}%", "&mdash;", "&mdash;"))
+
+    for w in load:
+        week_start = dt.date.fromisoformat(w["week_start"])
+        if week_start > today:
+            continue
+        rows.append(row(
+            f"W{w['week_no']}",
+            f"{fmt(num(w['target_km']))} km",
+            f"{fmt(num(w['actual_km']))} km",
+            hm(num(w["run_minutes"]) * 60),
+            hm(num(w["longest_run_minutes"]) * 60) if w["longest_run_minutes"] else "&mdash;",
+            f"{w['long_run_share_pct']}%" if w["long_run_share_pct"] is not None else "&mdash;",
+            fmt(num(w["session_load"])) if w["session_load"] is not None else "&mdash;",
+            str(w["amber_days"]) if w["amber_days"] else "0",
+        ))
+
+    if not rows:
+        return (
+            '      <p class="section__intro">Weekly load &mdash; time on feet, longest-run\n'
+            "      duration, long-run share, and internal load &mdash; will appear here once\n"
+            "      plan v3 weeks start completing.</p>"
+        )
+    intro = (
+        '      <p class="section__intro">Plan v3 is duration-led: the marathon is a\n'
+        "      time-on-feet problem, so minutes and long-run share are the primary exposure\n"
+        "      readouts and distance is context. Session-RPE load (effort &times; minutes,\n"
+        "      summed for the week) is the internal-load backbone &mdash; it survives heat,\n"
+        "      hills, and a flaky optical sensor. Amber days count the control loop's cautions;\n"
+        "      symptom detail stays private.</p>"
+    )
+    return (
+        intro
+        + '\n      <div class="table-scroll">\n      <table class="data-table">\n'
+        + "        <thead><tr><th>Week</th><th>Target</th><th>Run</th><th>Time on feet</th>"
+        + "<th>Longest run</th><th>Long-run share</th><th>Session-RPE load</th><th>Amber days</th></tr></thead>\n"
+        + "        <tbody>\n" + "\n".join(rows) + "\n        </tbody>\n"
+        + "      </table>\n      </div>"
+    )
+
+
+def build_plan_chart(weeks: list[dict], pre_km: float = 0.0) -> str:
+    max_target = max(w["target_km"] for w in weeks)
+    rows = [pre_plan_row(pre_km, max_target)] if pre_km > 0 else []
     for w in weeks:
         pct = round(w["target_km"] / max_target * 100)
         fill = "barchart__fill barchart__fill--cutback" if w["is_cutback"] else "barchart__fill"
@@ -814,6 +923,7 @@ def main() -> None:
     sessions = fetch("export_plan_sessions", "order=session_date")
     decisions = fetch("export_weekly_decisions", "order=week_no")
     statuses = fetch("export_daily_status", "order=day")
+    load = fetch("export_weekly_load", "order=week_no")
     weeks = [
         {
             "week_no": w["week_no"],
@@ -835,14 +945,15 @@ def main() -> None:
 
     html = DASHBOARD.read_text()
     html = replace_region(html, "stat-strip", build_stat_strip(weeks, runs, today), DASHBOARD)
-    html = replace_region(html, "mileage", build_mileage(weeks), DASHBOARD)
+    html = replace_region(html, "mileage", build_mileage(weeks, pre_plan_km(weeks, runs)), DASHBOARD)
     html = replace_region(html, "sessions", build_sessions_table(sessions, runs, today, cur), DASHBOARD)
+    html = replace_region(html, "load", build_load_table(load, runs, weeks, today), DASHBOARD)
     html = replace_region(html, "status-history", build_status_history(statuses, today), DASHBOARD)
     DASHBOARD.write_text(html)
 
     plan_page = ROOT / "site" / "plan" / "index.html"
     html = plan_page.read_text()
-    html = replace_region(html, "plan-current-chart", build_plan_chart(weeks), plan_page)
+    html = replace_region(html, "plan-current-chart", build_plan_chart(weeks, pre_plan_km(weeks, runs)), plan_page)
     html = replace_region(html, "plan-sessions", build_sessions_table(sessions, runs, today, cur), plan_page)
     html = replace_region(html, "plan-decisions", build_decisions(decisions, weeks), plan_page)
     plan_page.write_text(html)
@@ -883,6 +994,7 @@ def main() -> None:
                 "sessions": sessions,
                 "decisions": decisions,
                 "statuses": statuses,
+                "load": load,
             },
             indent=2,
         )
