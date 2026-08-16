@@ -122,11 +122,19 @@ def daily_rows(client: Garmin, days: list[dt.date]) -> list[dict]:
             raw["max_metrics"] = maxmet
         except Exception as e:
             print(f"  {iso}: max metrics failed: {e}")
+        hrv = None
+        try:
+            hrv = client.get_hrv_data(iso)
+            raw["hrv"] = hrv
+        except Exception as e:
+            print(f"  {iso}: hrv failed: {e}")
         if not raw:
             continue
 
         sleep_dto = (sleep or {}).get("dailySleepDTO") or {}
         sleep_scores = sleep_dto.get("sleepScores") or {}
+        hrv_summary = (hrv or {}).get("hrvSummary") or {}
+        hrv_baseline = hrv_summary.get("baseline") or {}
         vo2 = None
         if isinstance(maxmet, list) and maxmet:
             vo2 = ((maxmet[0] or {}).get("generic") or {}).get("vo2MaxPreciseValue")
@@ -143,6 +151,11 @@ def daily_rows(client: Garmin, days: list[dt.date]) -> list[dict]:
                 "body_battery_high": as_int((stats or {}).get("bodyBatteryHighestValue")),
                 "body_battery_low": as_int((stats or {}).get("bodyBatteryLowestValue")),
                 "vo2max_run": vo2,
+                "hrv_last_night": as_int(hrv_summary.get("lastNightAvg")),
+                "hrv_weekly_avg": as_int(hrv_summary.get("weeklyAvg")),
+                "hrv_status": hrv_summary.get("status"),
+                "hrv_baseline_low": as_int(hrv_baseline.get("balancedLow")),
+                "hrv_baseline_high": as_int(hrv_baseline.get("balancedUpper")),
                 "raw": raw,
                 "updated_at": now,
                 # Author's decision 2026-08-14: daily wellness aggregates publish on

@@ -64,6 +64,7 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
         (w for w in weeks if w["start"] <= today < w["start"] + dt.timedelta(days=7)), None
     )
     done = sum(1 for w in weeks if w["start"] + dt.timedelta(days=7) <= today)
+    total = len(weeks)
 
     phase_stat = stat("Phase", "—", "Plan not started.", "stat__value")
     if current:
@@ -71,21 +72,21 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
         phase_stat = stat(
             "Phase",
             escape(current["phase"]),
-            f"Weeks {min(in_phase)}&ndash;{max(in_phase)} of 17.",
+            f"Weeks {min(in_phase)}&ndash;{max(in_phase)} of {total}.",
             "stat__value",
         )
     elif done >= len(weeks):
-        phase_stat = stat("Phase", "Done", "All 17 weeks complete.", "stat__value")
+        phase_stat = stat("Phase", "Done", f"All {total} weeks complete.", "stat__value")
 
     if current:
         day_num = (today - current["start"]).days + 1
         weeks_note = f"Week {current['week_no']} in progress, day {day_num}."
     elif done >= len(weeks):
-        weeks_note = "All 17 weeks complete."
+        weeks_note = f"All {total} weeks complete."
     else:
-        weeks_note = "Plan starts Mon 10 Aug."
+        weeks_note = "Plan v3 starts Mon 17 Aug."
     weeks_stat = stat(
-        "Weeks completed", f"{done} <span class='stat__value--muted'>/ 17</span>", weeks_note
+        "Weeks completed", f"{done} <span class='stat__value--muted'>/ {total}</span>", weeks_note
     )
 
     if current:
@@ -174,24 +175,25 @@ def build_mileage(weeks: list[dict]) -> str:
         )
     legend += "</div>"
 
+    total = len(weeks)
     if any_actual:
-        heading = "      <h3>Planned vs. actual weekly mileage, all 17 weeks</h3>"
+        heading = f"      <h3>Planned vs. actual weekly mileage, all {total} weeks</h3>"
         intro = (
-            '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v2 targets with\n'
+            '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v3 targets with\n'
             "      actual mileage layered on as the dark inner bar. Actuals count approved, published\n"
             "      runs only, so a week can briefly show less than was really run.</p>"
         )
     else:
-        heading = "      <h3>Planned weekly mileage, all 17 weeks</h3>"
+        heading = f"      <h3>Planned weekly mileage, all {total} weeks</h3>"
         intro = (
-            '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v2 targets, shown ahead\n'
+            '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v3 targets, shown ahead\n'
             "      of any actual training. As weeks complete, actual mileage will be layered onto this same\n"
             "      chart rather than replacing it.</p>"
         )
 
     chart = '      <div class="barchart"><div class="barchart__rows">' + "".join(rows) + "</div>" + legend + "</div>"
     link = (
-        '      <p class="text-small"><a href="/plan/versions/v2-current/">'
+        '      <p class="text-small"><a href="/plan/versions/v3-current/">'
         "Full week-by-week table &amp; text equivalent &rarr;</a></p>"
     )
     return "\n".join([heading, intro, chart, link])
@@ -203,24 +205,199 @@ def current_week(weeks: list[dict], today: dt.date) -> dict | None:
     )
 
 
+# ---------------------------------------------------------------------------
+# Plan v3 regions: day-level sessions, current-plan chart, weekly decisions,
+# and the daily gate-status history. All read from export views; the sessions
+# table replaces the previously hand-edited HTML on /dashboard/ and /plan/.
+# ---------------------------------------------------------------------------
+
+SESSION_TYPE_LABEL = {
+    "rest": "Rest / mobility", "easy": "Easy run", "mlr": "Medium-long run",
+    "quality": "Quality", "long": "Long run", "race": "Race",
+    "shakeout": "Shakeout", "strength": "Strength", "review": "Review",
+}
+
+RUN_TYPES = {"easy", "mlr", "quality", "long", "race", "shakeout"}
+
+
+def build_sessions_table(sessions: list[dict], runs: list[dict], today: dt.date,
+                         week: dict | None) -> str:
+    if not week:
+        return (
+            '      <p class="section__intro">Plan v3 starts Monday 17 August. The first week\'s\n'
+            "      day-by-day sessions will appear here when it does.</p>"
+        )
+    start, end = week["start"], week["start"] + dt.timedelta(days=7)
+    week_sessions = sorted(
+        (s for s in sessions if start <= dt.date.fromisoformat(s["session_date"]) < end),
+        key=lambda s: (s["session_date"], 0 if s["session_type"] != "strength" else 1),
+    )
+    km_by_date: dict[str, float] = {}
+    for r in runs:
+        km_by_date[r["run_date"]] = km_by_date.get(r["run_date"], 0) + num(r["distance_km"])
+
+    rows = []
+    for s in week_sessions:
+        day = dt.date.fromisoformat(s["session_date"])
+        plan_bits = []
+        if s["target_km"] is not None:
+            plan_bits.append(f"{fmt(num(s['target_km']))} km")
+        if s["time_cap_min"]:
+            plan_bits.append(f"cap {s['time_cap_min'] // 60}:{s['time_cap_min'] % 60:02d}")
+        if s["fuel_target_g_h"]:
+            plan_bits.append(f"fuel &ge;{fmt(num(s['fuel_target_g_h']))} g/h")
+        plan_txt = ", ".join(plan_bits) if plan_bits else "&mdash;"
+
+        is_run = s["session_type"] in RUN_TYPES
+        logged = km_by_date.get(s["session_date"])
+        if is_run and logged:
+            status = f"<span class='mono'>{fmt(logged)} km logged</span>"
+        elif day > today or (day == today and not logged):
+            status = "<span class='status-badge status-badge--awaiting'>Upcoming</span>" if day > today \
+                else "<span class='status-badge status-badge--awaiting'>Today</span>"
+        elif is_run:
+            status = "<span class='status-badge status-badge--awaiting'>Not logged</span>"
+        else:
+            status = "&mdash;"
+
+        title = escape(s["title"])
+        if s["milestone"]:
+            title += f" <span class='status-badge'>&#9733; {escape(s['milestone'])}</span>"
+        date_str = day.strftime("%a %d %b").replace(" 0", " ")
+        rows.append(
+            f"          <tr><td class='mono'>{date_str}</td><td>{title}</td>"
+            f"<td>{plan_txt}</td><td>{status}</td></tr>"
+        )
+
+    intro = (
+        f'      <p class="section__intro">Week {week["week_no"]}, {escape(week["phase"])} phase.\n'
+        "      Sessions come from the day-level plan in Supabase, not a hand-edited table; run\n"
+        "      status reflects approved, published runs only.</p>"
+    )
+    return (
+        intro
+        + '\n      <div class="table-scroll">\n      <table class="data-table">\n'
+        + "        <thead><tr><th>Date</th><th>Session</th><th>Plan</th><th>Status</th></tr></thead>\n"
+        + "        <tbody>\n" + "\n".join(rows) + "\n        </tbody>\n"
+        + "      </table>\n      </div>"
+    )
+
+
+def build_plan_chart(weeks: list[dict]) -> str:
+    max_target = max(w["target_km"] for w in weeks)
+    rows = []
+    for w in weeks:
+        pct = round(w["target_km"] / max_target * 100)
+        fill = "barchart__fill barchart__fill--cutback" if w["is_cutback"] else "barchart__fill"
+        track = f'<span class="{fill}" style="width:{pct}%"></span>'
+        val = f"{fmt(w['target_km'])} km"
+        if w["actual_km"] > 0:
+            actual_pct = min(100, round(w["actual_km"] / max_target * 100))
+            track += f'<span class="barchart__fill--actual" style="width:{actual_pct}%"></span>'
+            val = f"{fmt(w['actual_km'])} / {fmt(w['target_km'])} km"
+        rows.append(
+            '<div class="barchart__row">\n'
+            f'          <span class="barchart__label">W{w["week_no"]}</span>\n'
+            f'          <span class="barchart__track">{track}</span>\n'
+            f'          <span class="barchart__val">{val}</span>\n'
+            "        </div>"
+        )
+    legend = (
+        '<div class="barchart__legend">'
+        '<span><span class="legend-swatch" style="background:#3e6e64"></span>Planned build week</span>'
+        '<span><span class="legend-swatch" style="background:#9fb8b0"></span>Planned cutback week</span>'
+        '<span><span class="legend-swatch" style="background:#26221c;opacity:.7"></span>Actual (approved runs)</span>'
+        "</div>"
+    )
+    return ('      <div class="barchart"><div class="barchart__rows">'
+            + "".join(rows) + "</div>" + legend + "</div>")
+
+
+def build_decisions(decisions: list[dict], weeks: list[dict]) -> str:
+    if not decisions:
+        return (
+            '      <p class="section__intro">No weekly decisions recorded yet under plan v3.\n'
+            "      One entry lands here at the end of every training week: the status call, the\n"
+            "      single lever changed (or held), and the one-sentence rationale &mdash; including\n"
+            "      the boring weeks where the decision is simply &ldquo;proceed&rdquo;.</p>"
+        )
+    items = []
+    for d in sorted(decisions, key=lambda x: -x["week_no"]):
+        week = next((w for w in weeks if w["week_no"] == d["week_no"]), None)
+        date = dt.date.fromisoformat(d["decided_on"]).strftime("%d %b %Y").lstrip("0")
+        phase = f", {escape(week['phase'])} phase" if week else ""
+        body = f"<p>{escape(d['rationale'])}</p>"
+        if d.get("lever"):
+            body += f"<p><strong>Lever:</strong> {escape(d['lever'])}</p>"
+        if d.get("what_went_right"):
+            body += f"<p><strong>Went right:</strong> {escape(d['what_went_right'])}</p>"
+        if d.get("data_confidence"):
+            body += f"<p class='text-small'>Data confidence: {escape(d['data_confidence'])}.</p>"
+        items.append(
+            '        <li class="timeline__item">\n'
+            f'          <div class="timeline__date">{date}</div>\n'
+            f'          <div class="timeline__title">Week {d["week_no"]}{phase}: {escape(d["decision"])}</div>\n'
+            f"          <div>{body}</div>\n"
+            "        </li>"
+        )
+    return '      <ul class="timeline">\n' + "\n".join(items) + "\n      </ul>"
+
+
+STATUS_LABEL = {
+    "green": ("G", "Green"), "green_easy": ("G&#8209;", "Green-easy (wearable-only signal)"),
+    "amber_life": ("A", "Amber (life)"), "amber_tissue": ("A!", "Amber (tissue)"),
+    "red_reported": ("R", "Red reported"),
+}
+
+
+def build_status_history(statuses: list[dict], today: dt.date) -> str:
+    recent = [s for s in statuses if dt.date.fromisoformat(s["day"]) > today - dt.timedelta(days=14)]
+    if not recent:
+        return (
+            '      <p class="section__intro">Daily green/amber/red gate statuses will appear here\n'
+            "      once the plan v3 control loop has data. Statuses are computed from the same rules\n"
+            "      the training decisions use; symptom detail stays private.</p>"
+        )
+    cells = []
+    for s in sorted(recent, key=lambda x: x["day"]):
+        day = dt.date.fromisoformat(s["day"])
+        short, label = STATUS_LABEL.get(s["status"], ("?", s["status"]))
+        color = {"G": "#3e6e64", "G&#8209;": "#7a9a90", "A": "#97552f", "A!": "#97552f", "R": "#8b2f22"}.get(short, "#999")
+        cells.append(
+            f'<span title="{day.strftime("%a %d %b")}: {label}" '
+            f'style="display:inline-block;width:1.5rem;height:1.5rem;line-height:1.5rem;'
+            f'text-align:center;border-radius:4px;background:{color};color:#fff;'
+            f'font-size:.72rem;font-weight:700;">{short}</span>'
+        )
+    return (
+        '      <p class="section__intro">The last two weeks of daily gate statuses from the\n'
+        "      adaptive control loop &mdash; green (execute as planned), green-easy (wearable-only\n"
+        "      signal: run easy, no quality), amber (hold or reduce), red (stop; reported symptoms\n"
+        "      only, never a wearable verdict). Symptom detail stays private; the status is the\n"
+        "      public record.</p>\n"
+        '      <div style="display:flex;gap:.3rem;flex-wrap:wrap;">' + "".join(cells) + "</div>"
+    )
+
+
 def build_home_glance(weeks: list[dict], today: dt.date) -> str:
     cur = current_week(weeks, today)
     done = sum(1 for w in weeks if w["start"] + dt.timedelta(days=7) <= today)
+    total = len(weeks)
     if cur:
-        status_value = f"Week {cur['week_no']} of 17"
-        status_note = f"{escape(cur['phase'])} phase &middot; training started 10 Aug 2026"
+        status_value = f"Week {cur['week_no']} of {total}"
+        status_note = f"{escape(cur['phase'])} phase &middot; plan v3, effective 17 Aug 2026"
     elif done >= len(weeks):
         status_value = "Complete"
-        status_note = "All 17 weeks done &middot; training started 10 Aug 2026"
+        status_note = f"All {total} weeks done &middot; training started 10 Aug 2026"
     else:
-        status_value = "Week 0 of 17"
-        status_note = "Training starts Mon 10 Aug 2026"
+        status_value = f"Week 0 of {total}"
+        status_note = "Plan v3 starts Mon 17 Aug 2026; training began 10 Aug under v2"
 
     parts = [
         stat(
             "Event",
             "BYD Singapore Marathon 2026",
-            "4 December 2026 &mdash; falls in Week 17 of the plan.",
+            "4 December 2026 &mdash; race day, Week 16 of the plan.",
             "stat__value",
         ),
         stat("Goal", "42.2 km in 5:00", "The one number the project is judged against."),
@@ -252,7 +429,7 @@ def build_home_progress(weeks: list[dict], runs: list[dict], today: dt.date) -> 
             intro = (
                 f"Day {day_num} of Week {cur['week_no']}. Nothing has been run yet under the\n"
                 "      current plan, so this strip mostly shows zeros and a target &mdash; that's what\n"
-                "      the start of a seventeen-week plan looks like."
+                "      the start of a sixteen-week plan looks like."
             )
         else:
             intro = (
@@ -275,9 +452,9 @@ def build_home_progress(weeks: list[dict], runs: list[dict], today: dt.date) -> 
             mileage_note = f"Target for Week {cur['week_no']}: {fmt(cur['target_km'])} km. Actual: awaiting the week's close."
     else:
         intro = (
-            "The seventeen-week plan is complete."
+            "The sixteen-week plan is complete."
             if done >= len(weeks)
-            else "Training has not started yet."
+            else "Plan v3 starts Monday 17 August; last week's running happened under the v2 placeholder."
         )
         weeks_note = "&mdash;"
         sessions_value, sessions_note = "&mdash;", "No plan week in progress."
@@ -309,7 +486,7 @@ def build_home_progress(weeks: list[dict], runs: list[dict], today: dt.date) -> 
         )
 
     parts = [
-        stat("Weeks completed", f"{done} <span class='stat__value--muted'>/ 17</span>", weeks_note),
+        stat("Weeks completed", f"{done} <span class='stat__value--muted'>/ {len(weeks)}</span>", weeks_note),
         stat("Sessions this week", sessions_value, sessions_note),
         stat("Weekly mileage", mileage_value, mileage_note, mileage_class),
         longest_stat,
@@ -404,7 +581,12 @@ def health_series(daily: list[dict]) -> dict:
         for r in days
         if r["sleep_seconds"] is not None
     ]
-    return {"vo2": vo2, "rhr": rhr, "sleep": sleep}
+    hrv = [
+        (dt.date.fromisoformat(r["day"]), int(r["hrv_last_night"]))
+        for r in days
+        if r.get("hrv_last_night") is not None
+    ]
+    return {"vo2": vo2, "rhr": rhr, "sleep": sleep, "hrv": hrv}
 
 
 def last7(series: list[tuple], today: dt.date) -> list[tuple]:
@@ -437,14 +619,22 @@ def build_rhr_card(s: dict, today: dt.date) -> str:
         f"avg {round(sum(vals) / len(vals))} bpm &middot; range {min(vals)}&ndash;{max(vals)} bpm "
         f"({len(vals)} of 7 days recorded)"
     ) if vals else "&mdash;"
+    rows = [
+        ("Latest", f"{v} bpm &mdash; {d_long(day)}, measured overnight by the watch."),
+        ("Last 7 days", week_line),
+    ]
+    if s.get("hrv"):
+        hweek = [x[1] for x in last7(s["hrv"], today)]
+        hday, hval = s["hrv"][-1]
+        hline = f"{hval} ms last night ({d_short(hday)})"
+        if hweek:
+            hline += f" &middot; 7-day avg {round(sum(hweek) / len(hweek))} ms"
+        rows.append(("Overnight HRV", hline + " &mdash; read as a rolling trend against a personal baseline band, never a single-day verdict."))
+    rows.append(("How to read it", "Meaningful as a multi-week trend under consistent conditions. Single-day spikes usually reflect poor sleep, heat, alcohol, or stress &mdash; not a change in fitness."))
     return state_card(
         "Tracking &middot; Garmin, overnight",
         f'<span class="mono">{v}</span> bpm',
-        [
-            ("Latest", f"{v} bpm &mdash; {d_long(day)}, measured overnight by the watch."),
-            ("Last 7 days", week_line),
-            ("How to read it", "Meaningful as a multi-week trend under consistent conditions. Single-day spikes usually reflect poor sleep, heat, alcohol, or stress &mdash; not a change in fitness."),
-        ],
+        rows,
     )
 
 
@@ -621,6 +811,9 @@ def main() -> None:
     raw_weeks = fetch("export_weekly_progress", "order=week_no")
     runs = fetch("export_runs", "order=run_date")
     daily = fetch("export_daily", "order=day")
+    sessions = fetch("export_plan_sessions", "order=session_date")
+    decisions = fetch("export_weekly_decisions", "order=week_no")
+    statuses = fetch("export_daily_status", "order=day")
     weeks = [
         {
             "week_no": w["week_no"],
@@ -638,10 +831,21 @@ def main() -> None:
     ]
     today = dt.datetime.now(TZ).date()
 
+    cur = current_week(weeks, today)
+
     html = DASHBOARD.read_text()
     html = replace_region(html, "stat-strip", build_stat_strip(weeks, runs, today), DASHBOARD)
     html = replace_region(html, "mileage", build_mileage(weeks), DASHBOARD)
+    html = replace_region(html, "sessions", build_sessions_table(sessions, runs, today, cur), DASHBOARD)
+    html = replace_region(html, "status-history", build_status_history(statuses, today), DASHBOARD)
     DASHBOARD.write_text(html)
+
+    plan_page = ROOT / "site" / "plan" / "index.html"
+    html = plan_page.read_text()
+    html = replace_region(html, "plan-current-chart", build_plan_chart(weeks), plan_page)
+    html = replace_region(html, "plan-sessions", build_sessions_table(sessions, runs, today, cur), plan_page)
+    html = replace_region(html, "plan-decisions", build_decisions(decisions, weeks), plan_page)
+    plan_page.write_text(html)
 
     html = HOME.read_text()
     html = replace_region(html, "home-glance", build_home_glance(weeks, today), HOME)
@@ -676,6 +880,9 @@ def main() -> None:
                 "weeks": [{**w, "start": w["start"].isoformat()} for w in weeks],
                 "runs": runs,
                 "daily": daily,
+                "sessions": sessions,
+                "decisions": decisions,
+                "statuses": statuses,
             },
             indent=2,
         )

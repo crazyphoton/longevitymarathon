@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Training Log — Longevity Marathon</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+  /* Private capture surface: mobile-first, tap-heavy, within the 30–60 s
+     budgets in plan v3 §4.2. Minimum viable dataset fields are marked. */
+  .log-wrap { max-width: 34rem; margin: 0 auto; padding: 1rem; }
+  .log-card { background: var(--color-bg-raised); border: 1px solid var(--color-rule);
+    border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 1rem; }
+  .log-card h2 { font-size: 1.05rem; margin: 0 0 .6rem; }
+  .status-pill { display: inline-block; padding: .3rem .8rem; border-radius: 999px;
+    font-weight: 700; font-size: 1rem; }
+  .status-green { background: var(--color-accent-soft); color: var(--color-accent-ink);
+    border: 1px solid var(--color-accent-soft-border); }
+  .status-amber { background: var(--color-flag-soft); color: var(--color-flag);
+    border: 1px solid var(--color-flag); }
+  .status-red { background: #8b2f22; color: #fff; }
+  .seg { display: flex; flex-wrap: wrap; gap: .35rem; margin: .25rem 0 .75rem; }
+  .seg button { flex: 1 1 auto; min-width: 2.4rem; padding: .55rem .3rem;
+    border: 1px solid var(--color-rule-strong); border-radius: 8px;
+    background: var(--color-bg); color: var(--color-ink); font-size: .95rem; }
+  .seg button.sel { background: var(--color-accent); border-color: var(--color-accent);
+    color: #fff; font-weight: 700; }
+  .log-field { margin-bottom: .35rem; }
+  .log-field label { display: block; font-size: .8rem; font-weight: 600;
+    color: var(--color-ink-soft); margin-bottom: .1rem; }
+  .log-field .core { color: var(--color-accent-ink); }
+  .log-field input[type=text], .log-field input[type=number], .log-field input[type=email],
+  .log-field input[type=password], .log-field textarea, .log-field select {
+    width: 100%; padding: .5rem .6rem; border: 1px solid var(--color-rule-strong);
+    border-radius: 8px; background: var(--color-bg); font: inherit; }
+  .log-save { width: 100%; padding: .7rem; margin-top: .4rem; border: 0; border-radius: 8px;
+    background: var(--color-accent); color: #fff; font-weight: 700; font-size: 1rem; }
+  .log-save:disabled { opacity: .5; }
+  .log-msg { font-size: .85rem; margin-top: .4rem; min-height: 1.1rem; }
+  .log-msg.ok { color: var(--color-accent-ink); }
+  .log-msg.err { color: var(--color-flag); }
+  .log-tabs { display: flex; gap: .3rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .log-tabs button { padding: .5rem .7rem; border: 1px solid var(--color-rule-strong);
+    border-radius: 8px; background: var(--color-bg); font-size: .85rem; }
+  .log-tabs button.sel { background: var(--color-ink); color: var(--color-bg); }
+  .plan-today { font-size: .92rem; margin: .4rem 0 0; }
+  .plan-today li { margin-bottom: .2rem; }
+  .muted { color: var(--color-ink-faint); font-size: .82rem; }
+  .warn-banner { background: var(--color-flag-soft); border: 1px solid var(--color-flag);
+    border-radius: 8px; padding: .6rem .8rem; font-size: .9rem; margin-bottom: 1rem; }
+  .hidden { display: none !important; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem .75rem; }
+</style>
+</head>
+<body>
+  <main class="log-wrap" id="main">
+    <p class="muted" style="margin:.3rem 0 1rem;"><a href="/">&larr; marathonlongevity.run</a> ·
+      Private training log. Data lands in Supabase; the public site shows only curated aggregates.</p>
+
+    <!-- Login -->
+    <section id="login" class="log-card">
+      <h2>Sign in</h2>
+      <form id="login-form">
+        <div class="log-field"><label for="pw">Password</label>
+          <input type="password" id="pw" autocomplete="current-password" required></div>
+        <button class="log-save" type="submit">Sign in</button>
+        <div class="log-msg" id="login-msg"></div>
+      </form>
+    </section>
+
+    <div id="app" class="hidden">
+      <div id="circuit" class="warn-banner hidden"></div>
+
+      <!-- Today -->
+      <section class="log-card">
+        <h2>Today <span id="today-date" class="muted"></span></h2>
+        <p><span id="status-pill" class="status-pill">…</span></p>
+        <p class="muted" id="status-why"></p>
+        <ul class="plan-today" id="plan-today"></ul>
+        <p class="muted" id="capture-stats"></p>
+      </section>
+
+      <div class="log-tabs" id="tabs">
+        <button data-tab="morning">Morning</button>
+        <button data-tab="pre_run">Pre-run</button>
+        <button data-tab="post_run" class="sel">Post-run</button>
+        <button data-tab="next_morning">Next AM</button>
+        <button data-tab="weekly">Weekly</button>
+        <button data-tab="issues">Issues</button>
+      </div>
+
+      <!-- Morning (30–45 s) -->
+      <section class="log-card tabpane hidden" id="pane-morning">
+        <h2>Morning check-in</h2>
+        <div class="log-field"><label>Sleep quality</label><div class="seg" data-f="sleep_quality" data-vals="1,2,3,4,5"></div></div>
+        <div class="log-field"><label>Energy</label><div class="seg" data-f="energy" data-vals="1,2,3,4,5"></div></div>
+        <div class="log-field"><label>Mood</label><div class="seg" data-f="mood" data-vals="1,2,3,4,5"></div></div>
+        <div class="log-field"><label>Soreness (general)</label><div class="seg" data-f="soreness" data-vals="0,1,2,3,4,5"></div></div>
+        <div class="log-field"><label>Feeling ill?</label><div class="seg" data-f="illness" data-vals="no,yes"></div></div>
+        <button class="log-save" data-save="morning">Save morning</button>
+        <div class="log-msg" data-msg="morning"></div>
+      </section>
+
+      <!-- Pre-run (20–40 s) -->
+      <section class="log-card tabpane hidden" id="pane-pre_run">
+        <h2>Pre-run</h2>
+        <div class="log-field"><label>Any red flag? (chest, faint, breathless, confusion, dark urine, gait-changing pain)</label>
+          <div class="seg" data-f="red_flag" data-vals="no,yes"></div></div>
+        <div class="log-field"><label>Pain now (0–10)</label><div class="seg" data-f="pain_severity" data-vals="0,1,2,3,4,5,6,7,8,9,10"></div></div>
+        <div class="log-field"><label>Pain location (if any)</label><input type="text" data-f="pain_location" placeholder="e.g. left Achilles"></div>
+        <div class="log-field"><label>Changing how you walk/run?</label><div class="seg" data-f="gait_affected" data-vals="no,yes"></div></div>
+        <button class="log-save" data-save="pre_run">Save pre-run</button>
+        <div class="log-msg" data-msg="pre_run"></div>
+      </section>
+
+      <!-- Post-run (45–60 s) — CORE -->
+      <section class="log-card tabpane" id="pane-post_run">
+        <h2>Post-run</h2>
+        <div class="log-field"><label class="core">RPE (1–10) — core field</label><div class="seg" data-f="rpe" data-vals="1,2,3,4,5,6,7,8,9,10"></div></div>
+        <div class="log-field"><label>Completed as planned?</label><div class="seg" data-f="completed_as_planned" data-vals="no,yes"></div></div>
+        <div class="log-field"><label>Pain trend during run</label><div class="seg" data-f="pain_trend" data-vals="none,improving,stable,worsening"></div></div>
+        <div class="grid2">
+          <div class="log-field"><label>Fuel (g carbs/hour)</label><input type="number" inputmode="numeric" data-f="fuel_g_per_h"></div>
+          <div class="log-field"><label>Fluid (ml)</label><input type="number" inputmode="numeric" data-f="fluid_ml"></div>
+        </div>
+        <div class="log-field"><label>GI trouble (0 none – 5 severe)</label><div class="seg" data-f="gi_score" data-vals="0,1,2,3,4,5"></div></div>
+        <div class="log-field"><label>Skin/foot issue (chafe, blister, hot spot)?</label><div class="seg" data-f="skin_foot_issue" data-vals="no,yes"></div></div>
+        <div class="log-field"><label>HR/GPS confidence</label><div class="seg" data-f="device_confidence" data-vals="high,medium,low"></div></div>
+        <div class="log-field"><label>Note</label><input type="text" data-f="note"></div>
+        <button class="log-save" data-save="post_run">Save post-run</button>
+        <div class="log-msg" data-msg="post_run"></div>
+      </section>
+
+      <!-- Next morning (30–45 s) — CORE -->
+      <section class="log-card tabpane hidden" id="pane-next_morning">
+        <h2>Next morning (after key run)</h2>
+        <div class="log-field"><label class="core">Issue vs baseline — core field</label>
+          <div class="seg" data-f="issue_vs_baseline" data-vals="better,baseline,worse"></div></div>
+        <div class="log-field"><label>Morning stiffness (minutes)</label><input type="number" inputmode="numeric" data-f="stiffness_min"></div>
+        <div class="log-field"><label>Swelling?</label><div class="seg" data-f="swelling" data-vals="no,yes"></div></div>
+        <div class="log-field"><label>Stairs/walking normal?</label><div class="seg" data-f="stairs_normal" data-vals="yes,no"></div></div>
+        <div class="log-field"><label>Ready for easy activity?</label><div class="seg" data-f="ready_for_easy" data-vals="yes,no"></div></div>
+        <button class="log-save" data-save="next_morning">Save next-morning</button>
+        <div class="log-msg" data-msg="next_morning"></div>
+      </section>
+
+      <!-- Weekly review (3–5 min) -->
+      <section class="log-card tabpane hidden" id="pane-weekly">
+        <h2>Weekly review <span class="muted" id="weekly-week"></span></h2>
+        <div class="log-field"><label>Decision</label>
+          <div class="seg" data-f="decision" data-vals="progress,hold,reduce,substitute,review"></div></div>
+        <div class="log-field"><label>Single lever (what changes next week)</label><input type="text" data-f="lever" placeholder="e.g. long run 18 → 19 km"></div>
+        <div class="log-field"><label>One-sentence rationale</label><textarea data-f="rationale" rows="2"></textarea></div>
+        <div class="log-field"><label>What went right this week</label><textarea data-f="what_went_right" rows="2"></textarea></div>
+        <div class="log-field"><label>Stop/modify conditions next week</label><textarea data-f="stop_conditions" rows="2"></textarea></div>
+        <div class="log-field"><label>Energy availability OK? (appetite, weight trend, cold/sleep/motivation flags)</label>
+          <div class="seg" data-f="energy_availability_ok" data-vals="yes,no"></div></div>
+        <div class="log-field"><label>EA note (if no)</label><input type="text" data-f="ea_note"></div>
+        <div class="log-field"><label>Data confidence</label><div class="seg" data-f="data_confidence" data-vals="high,medium,low"></div></div>
+        <div class="log-field"><label>Publish decision + rationale on the public plan page?</label>
+          <div class="seg" data-f="is_public" data-vals="no,yes"></div></div>
+        <button class="log-save" data-save="weekly">Save weekly decision</button>
+        <div class="log-msg" data-msg="weekly"></div>
+      </section>
+
+      <!-- Issues -->
+      <section class="log-card tabpane hidden" id="pane-issues">
+        <h2>Issue register</h2>
+        <div id="issue-list" class="plan-today"></div>
+        <h2 style="margin-top:1rem;">Log / update an issue</h2>
+        <div class="log-field"><label>Location</label><input type="text" data-f="location" placeholder="e.g. left Achilles"></div>
+        <div class="log-field"><label>Severity (0–10)</label><div class="seg" data-f="severity" data-vals="0,1,2,3,4,5,6,7,8,9,10"></div></div>
+        <div class="log-field"><label>Trend</label><div class="seg" data-f="trend" data-vals="improving,stable,worsening"></div></div>
+        <div class="log-field"><label>Status</label><div class="seg" data-f="status" data-vals="watch,active,clinical,resolved"></div></div>
+        <div class="log-field"><label>Affecting gait?</label><div class="seg" data-f="gait_affected" data-vals="no,yes"></div></div>
+        <div class="log-field"><label>Note</label><input type="text" data-f="note"></div>
+        <button class="log-save" data-save="issue">Save issue</button>
+        <div class="log-msg" data-msg="issue"></div>
+      </section>
+
+      <p class="muted">Minimum viable dataset: post-run RPE and next-morning status. If you log
+      nothing else, log those two. Red flags are never cleared by this page — symptoms outrank
+      every dashboard, in that direction only.</p>
+      <p class="muted"><button id="logout" style="border:0;background:none;color:var(--color-accent);text-decoration:underline;">Sign out</button></p>
+    </div>
+  </main>
+
+<script>
+(function () {
+  "use strict";
+  var URL_ = "https://hwquutezbptpuppilvgq.supabase.co";
+  var ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3cXV1dGV6YnB0cHVwcGlsdmdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY2MTU1MDcsImV4cCI6MjEwMjE5MTUwN30.f3XPvUTRmRHywx-A51KQFf_97Q4i3vXA3tjkzo85SHE";
+  var EMAIL = "snishanths@gmail.com";
+  var PLAN = "v3";
+
+  var session = null;
+  try { session = JSON.parse(localStorage.getItem("log_session") || "null"); } catch (e) {}
+
+  function saveSession(s) { session = s; localStorage.setItem("log_session", JSON.stringify(s)); }
+  function headers() {
+    return { "apikey": ANON, "Authorization": "Bearer " + (session ? session.access_token : ANON),
+             "Content-Type": "application/json" };
+  }
+  function localDate(d) {
+    d = d || new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" +
+           String(d.getDate()).padStart(2, "0");
+  }
+
+  function api(method, path, body, prefer) {
+    var h = headers();
+    if (prefer) h["Prefer"] = prefer;
+    return fetch(URL_ + path, { method: method, headers: h, body: body ? JSON.stringify(body) : undefined })
+      .then(function (r) {
+        if (r.status === 401 && session) return refresh().then(function () { return api(method, path, body, prefer); });
+        if (!r.ok) return r.text().then(function (t) { throw new Error(r.status + " " + t.slice(0, 140)); });
+        return r.status === 204 ? null : r.json();
+      });
+  }
+
+  function refresh() {
+    return fetch(URL_ + "/auth/v1/token?grant_type=refresh_token", {
+      method: "POST", headers: { "apikey": ANON, "Content-Type": "application/json" },
+      body: JSON.stringify({ refresh_token: session.refresh_token })
+    }).then(function (r) {
+      if (!r.ok) { localStorage.removeItem("log_session"); location.reload(); throw new Error("session expired"); }
+      return r.json();
+    }).then(saveSession);
+  }
+
+  // ---- segmented controls ----
+  document.querySelectorAll(".seg").forEach(function (seg) {
+    seg.dataset.vals.split(",").forEach(function (v) {
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = v;
+      b.addEventListener("click", function () {
+        var was = b.classList.contains("sel");
+        seg.querySelectorAll("button").forEach(function (x) { x.classList.remove("sel"); });
+        if (!was) b.classList.add("sel");   // tap again to unset
+      });
+      seg.appendChild(b);
+    });
+  });
+
+  function segVal(seg) {
+    var b = seg.querySelector("button.sel");
+    if (!b) return null;
+    var v = b.textContent;
+    if (v === "yes") return true;
+    if (v === "no") return false;
+    return /^-?\d+$/.test(v) ? parseInt(v, 10) : v;
+  }
+
+  function collect(pane) {
+    var out = {};
+    pane.querySelectorAll("[data-f]").forEach(function (el) {
+      var k = el.dataset.f, v;
+      if (el.classList.contains("seg")) v = segVal(el);
+      else v = el.value === "" ? null : (el.type === "number" ? Number(el.value) : el.value);
+      if (v !== null && v !== undefined) out[k] = v;
+    });
+    return out;
+  }
+
+  function msg(name, text, ok) {
+    var el = document.querySelector('[data-msg="' + name + '"]');
+    el.textContent = text; el.className = "log-msg " + (ok ? "ok" : "err");
+    if (ok) setTimeout(function () { el.textContent = ""; }, 4000);
+  }
+
+  // ---- tabs ----
+  var tabs = document.getElementById("tabs");
+  tabs.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    tabs.querySelectorAll("button").forEach(function (x) { x.classList.remove("sel"); });
+    b.classList.add("sel");
+    document.querySelectorAll(".tabpane").forEach(function (p) { p.classList.add("hidden"); });
+    document.getElementById("pane-" + b.dataset.tab).classList.remove("hidden");
+  });
+
+  // ---- login ----
+  document.getElementById("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    fetch(URL_ + "/auth/v1/token?grant_type=password", {
+      method: "POST", headers: { "apikey": ANON, "Content-Type": "application/json" },
+      body: JSON.stringify({ email: EMAIL, password: document.getElementById("pw").value })
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j.access_token) { document.getElementById("login-msg").textContent = j.error_description || j.msg || "Sign-in failed."; return; }
+      saveSession(j); boot();
+    });
+  });
+  document.getElementById("logout").addEventListener("click", function () {
+    localStorage.removeItem("log_session"); location.reload();
+  });
+
+  // ---- saves ----
+  var weekStarts = [];  // [{week_no, week_start}]
+  function weekFor(dateStr) {
+    for (var i = weekStarts.length - 1; i >= 0; i--)
+      if (dateStr >= weekStarts[i].week_start) return weekStarts[i].week_no;
+    return null;
+  }
+
+  document.querySelectorAll("[data-save]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var kind = btn.dataset.save;
+      var pane = btn.closest(".tabpane");
+      var body = collect(pane);
+      btn.disabled = true;
+      var p;
+      if (kind === "weekly") {
+        if (!body.decision || !body.rationale) { msg("weekly", "Decision and rationale are required.", false); btn.disabled = false; return; }
+        body.plan_version = PLAN; body.week_no = weekFor(localDate()); body.decided_on = localDate();
+        p = api("POST", "/rest/v1/weekly_decision?on_conflict=plan_version,week_no", [body],
+                "resolution=merge-duplicates,return=minimal");
+      } else if (kind === "issue") {
+        if (!body.location) { msg("issue", "Location is required.", false); btn.disabled = false; return; }
+        body.updated_at = new Date().toISOString();
+        p = api("POST", "/rest/v1/issue", [body], "return=minimal").then(loadIssues);
+      } else {
+        // next_morning logs against today (it describes this morning's state)
+        body.local_date = localDate(); body.moment = kind;
+        p = api("POST", "/rest/v1/checkin?on_conflict=local_date,moment", [body],
+                "resolution=merge-duplicates,return=minimal");
+      }
+      p.then(function () { msg(kind, "Saved.", true); loadToday(); })
+       .catch(function (e) { msg(kind, e.message, false); })
+       .then(function () { btn.disabled = false; });
+    });
+  });
+
+  // ---- today card ----
+  function pill(status) {
+    var el = document.getElementById("status-pill");
+    var map = {
+      green: ["GREEN — execute as planned", "status-green"],
+      green_easy: ["GREEN-EASY — wearable-only signal: run easy, no quality, recheck tomorrow", "status-amber"],
+      amber_life: ["AMBER (life) — run easy, shorten ~20%, no quality", "status-amber"],
+      amber_tissue: ["AMBER (tissue) — reduce the provoking load; recheck next morning", "status-amber"],
+      red_reported: ["RED reported — stop; clinical assessment outranks this page", "status-red"]
+    };
+    var m = map[status] || [status || "no data yet", "status-amber"];
+    el.textContent = m[0]; el.className = "status-pill " + m[1];
+  }
+
+  function loadToday() {
+    api("GET", "/rest/v1/v_today_status?select=*").then(function (rows) {
+      var t = rows[0];
+      if (!t) { pill(null); return; }
+      pill(t.status);
+      var why = [];
+      if (t.day !== localDate()) why.push("latest data: " + t.day);
+      if (t.hrv_missing) why.push("no HRV last night (data confidence reduced)");
+      if (t.autonomic_run > 0) why.push("autonomic off-baseline " + t.autonomic_run + "d");
+      if (t.poor_night_run > 0) why.push(t.poor_night_run + " poor night(s)");
+      if (t.amber_days_7d > 0) why.push(t.amber_days_7d + " amber day(s) in last 7");
+      document.getElementById("status-why").textContent = why.join(" · ");
+      var cb = document.getElementById("circuit");
+      if (t.circuit_breaker) {
+        cb.textContent = "Circuit breaker: 3+ amber days in 7. Structured review before the next key session — is it load, life, fueling, or medical? One change, one hypothesis.";
+        cb.classList.remove("hidden");
+      } else cb.classList.add("hidden");
+    }).catch(function () { pill(null); });
+
+    api("GET", "/rest/v1/plan_session?plan_version=eq." + PLAN + "&session_date=eq." + localDate() +
+        "&select=session_type,title,detail,fuel_target_g_h,time_cap_min,milestone")
+      .then(function (rows) {
+        var ul = document.getElementById("plan-today");
+        ul.innerHTML = rows.length ? "" : "<li class='muted'>No planned session today.</li>";
+        rows.forEach(function (s) {
+          var li = document.createElement("li");
+          var bits = [s.title];
+          if (s.fuel_target_g_h) bits.push("fuel ≥" + s.fuel_target_g_h + " g/h");
+          if (s.milestone) bits.push("★ " + s.milestone);
+          li.innerHTML = "<strong>" + bits.join(" · ") + "</strong>" +
+            (s.detail ? "<br><span class='muted'>" + s.detail + "</span>" : "");
+          ul.appendChild(li);
+        });
+      });
+
+    api("GET", "/rest/v1/v_capture_stats?select=*").then(function (rows) {
+      var c = rows[0] || {};
+      document.getElementById("capture-stats").textContent =
+        "Capture last 7 days — post-run: " + (c.post_run_7d || 0) + ", morning: " +
+        (c.morning_7d || 0) + ", next-morning: " + (c.next_morning_7d || 0) +
+        ". The loop runs on post-run RPE + next-morning status.";
+    });
+  }
+
+  function loadIssues() {
+    api("GET", "/rest/v1/issue?status=neq.resolved&select=location,severity,trend,status,note&order=updated_at.desc")
+      .then(function (rows) {
+        var el = document.getElementById("issue-list");
+        el.innerHTML = rows.length ? "" : "<p class='muted'>No open issues.</p>";
+        rows.forEach(function (i) {
+          var d = document.createElement("div");
+          d.innerHTML = "<strong>" + i.location + "</strong> — sev " + (i.severity ?? "?") +
+            ", " + (i.trend || "?") + ", " + i.status + (i.note ? " · " + i.note : "");
+          el.appendChild(d);
+        });
+      });
+  }
+
+  function boot() {
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    document.getElementById("today-date").textContent = localDate();
+    api("GET", "/rest/v1/plan_week?plan_version=eq." + PLAN + "&select=week_no,week_start&order=week_no")
+      .then(function (rows) { weekStarts = rows;
+        var w = weekFor(localDate());
+        document.getElementById("weekly-week").textContent = w ? "— Week " + w : "";
+      });
+    loadToday(); loadIssues();
+  }
+
+  if (session) boot();
+})();
+</script>
+</body>
+</html>
