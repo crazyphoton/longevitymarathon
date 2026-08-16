@@ -154,14 +154,14 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
         )
 
     target_stat = stat("Target", "42.2 km / 5:00", "The fixed point.")
-    readiness_stat = stat(
-        "Readiness",
-        "Not shown",
-        "Omitted until a defensible, transparent model exists.",
-        "stat__value stat__value--muted",
+    banked_secs = sum(num(r.get("duration_s")) for r in runs)
+    banked_stat = stat(
+        "Hours banked",
+        hm(banked_secs) if banked_secs else "&mdash;",
+        "Total time on feet since 1 Aug. This number only goes up &mdash; a shortened amber-week run still adds to it.",
     )
 
-    parts = [target_stat, phase_stat, weeks_stat, sessions_stat, feet_stat, longest_stat, readiness_stat]
+    parts = [target_stat, phase_stat, weeks_stat, sessions_stat, feet_stat, longest_stat, banked_stat]
     return '      <div class="stat-strip">' + "".join(parts) + "</div>"
 
 
@@ -350,6 +350,152 @@ def build_sessions_table(sessions: list[dict], runs: list[dict], today: dt.date,
         + "        <thead><tr><th>Date</th><th>Session</th><th>Plan</th><th>Status</th></tr></thead>\n"
         + "        <tbody>\n" + "\n".join(rows) + "\n        </tbody>\n"
         + "      </table>\n      </div>"
+    )
+
+
+MARATHON_MIN = 300  # the 5:00 race target — the ladder chart's full scale
+
+
+def build_ladder(sessions: list[dict], runs: list[dict], weeks: list[dict], today: dt.date) -> str:
+    """The story chart: each week's long run as a rung toward the 5:00 race
+    target. Tick = planned time cap; dark bar = actual duration once run;
+    the permanent gap between the tallest rung (3:30) and the right edge is
+    what taper, fueling, and pacing have to cover."""
+    secs_by_date: dict[str, float] = {}
+    for r in runs:
+        d = r["run_date"]
+        secs_by_date[d] = max(secs_by_date.get(d, 0), num(r.get("duration_s")))
+
+    longs = [s for s in sessions if s["session_type"] in ("long", "race")]
+    best_so_far = 0.0
+    rows = []
+    for s in sorted(longs, key=lambda x: x["session_date"]):
+        day = dt.date.fromisoformat(s["session_date"])
+        week = next((w for w in weeks if w["start"] <= day < w["start"] + dt.timedelta(days=7)), None)
+        label = f"W{week['week_no']}" if week else "—"
+        cap = s["time_cap_min"]
+        is_race = s["session_type"] == "race" and num(s["target_km"] or 0) > 40
+        tick_min = MARATHON_MIN if is_race else cap
+        track = ""
+        actual_secs = secs_by_date.get(s["session_date"], 0)
+        val_bits = []
+        if actual_secs:
+            pct = min(100, round(actual_secs / 60 / MARATHON_MIN * 100))
+            track += (
+                f'<span class="barchart__actual" style="display:block;height:100%;'
+                f'width:{pct}%;background:#26221c;opacity:.75;border-radius:2px"></span>'
+            )
+            new_best = actual_secs > best_so_far
+            best_so_far = max(best_so_far, actual_secs)
+            val_bits.append(hm(actual_secs) + (" &#9733;" if new_best else ""))
+        elif day <= today:
+            val_bits.append("&mdash;")
+        if tick_min:
+            tpct = round(tick_min / MARATHON_MIN * 100)
+            color = "#97552f" if is_race else "#3e6e64"
+            track += (
+                f'<span class="barchart__marker" style="position:absolute;top:0;height:100%;'
+                f'width:3px;border-radius:1px;left:min({tpct}%, calc(100% - 3px));'
+                f'background:{color}"></span>'
+            )
+            if not actual_secs:
+                val_bits.append("5:00 race" if is_race else f"cap {cap // 60}:{cap % 60:02d}")
+        elif not actual_secs:
+            val_bits.append("HM race" if s["session_type"] == "race" else "&mdash;")
+        rows.append(
+            '<div class="barchart__row">\n'
+            f'          <span class="barchart__label">{label}</span>\n'
+            f'          <span class="barchart__track" style="position:relative">{track}</span>\n'
+            f'          <span class="barchart__val">{" ".join(val_bits)}</span>\n'
+            "        </div>"
+        )
+
+    legend = (
+        '<div class="barchart__legend">'
+        '<span><span class="legend-swatch" style="background:#26221c;opacity:.75"></span>Longest run of the day (actual)</span>'
+        '<span><span class="legend-swatch" style="background:#3e6e64;width:0.25em"></span>Planned time cap</span>'
+        '<span><span class="legend-swatch" style="background:#97552f;width:0.25em"></span>Race day, 5:00 target</span>'
+        "</div>"
+    )
+    best_note = ""
+    if best_so_far:
+        pct_of_race = round(best_so_far / 60 / MARATHON_MIN * 100)
+        best_note = (
+            f'      <p class="text-small" style="color:var(--color-ink-faint);">Longest so far:\n'
+            f"      {hm(best_so_far)} &mdash; {pct_of_race}% of the five-hour race target. The ladder\n"
+            "      tops out at 3:15&ndash;3:30 in Week 14, about 70%, by design: the remaining distance\n"
+            "      is what the taper, the fueling, and conservative pacing are for. &#9733; marks a\n"
+            "      longest-ever run.</p>"
+        )
+    return ('      <div class="barchart"><div class="barchart__rows">'
+            + "".join(rows) + "</div>" + legend + "</div>\n" + best_note)
+
+
+def sunday_of(weeks: list[dict], week_no: int) -> dt.date | None:
+    w = next((w for w in weeks if w["week_no"] == week_no), None)
+    return w["start"] + dt.timedelta(days=6) if w else None
+
+
+def build_readiness(runs: list[dict], fuel: list[dict], decisions: list[dict],
+                    weeks: list[dict]) -> str:
+    """Proven readiness: named rehearsals from the plan that either happened
+    or didn't. Counting, not scoring — no formula anywhere."""
+    dur_by_date = {}
+    km_by_date: dict[str, float] = {}
+    for r in runs:
+        km_by_date[r["run_date"]] = km_by_date.get(r["run_date"], 0) + num(r["distance_km"])
+        dur_by_date[r["run_date"]] = max(dur_by_date.get(r["run_date"], 0), num(r.get("duration_s")))
+
+    def ran_on(day: dt.date | None, min_km: float = 0) -> bool:
+        return bool(day) and km_by_date.get(day.isoformat(), 0) >= min_km
+
+    hm_day, mp_day, dress_day = sunday_of(weeks, 11), sunday_of(weeks, 12), sunday_of(weeks, 14)
+    longest_min = max((v / 60 for v in dur_by_date.values()), default=0)
+
+    items = [
+        ("Fuel practice begun (&ge;30 g/h on a 75 min+ run)",
+         any(num(f["fuel_g_per_h"]) >= 30 and num(f["minutes"]) >= 75 for f in fuel),
+         "Gut training starts in Week 3; the gut is trainable and race-day fueling must be, too."),
+        ("Long run &ge; 2:30", longest_min >= 150,
+         "Time on feet is the durability currency; 2:30 arrives around Week 8."),
+        ("Long run &ge; 3:00", longest_min >= 180,
+         "The deep-durability zone; roughly Week 10 onward."),
+        ("&ge;50 g/h held on a long run",
+         any(num(f["fuel_g_per_h"]) >= 50 and num(f["minutes"]) >= 90 for f in fuel),
+         "The Week 10&ndash;11 fueling step."),
+        ("&ge;60 g/h held, gut untroubled",
+         any(num(f["fuel_g_per_h"]) >= 60 and f["gi_ok"] and num(f["minutes"]) >= 90 for f in fuel),
+         "The race dose for a five-hour finisher &mdash; 30 g/h is bonk management, not race fueling."),
+        ("Half-marathon tune-up raced (Week 11)", ran_on(hm_day, 18),
+         "The only pacing evidence that predates race day; it sets the marathon pacing plan."),
+        ("Marathon-effort blocks inside a long run (Week 12)", ran_on(mp_day, 22),
+         "Race pace has to be calibrated at race intensity &mdash; and the gut tested at that intensity."),
+        ("Fueled long run &ge; 26 km &mdash; the minimum viable peak",
+         any(km_by_date.get(f["day"], 0) >= 26 for f in fuel),
+         "The plan's anti-under-training guard: without one of these by Week 14, the go/no-go must formally re-scope the goal."),
+        ("Dress rehearsal completed (Week 14)", ran_on(dress_day, 24),
+         "Race breakfast, kit, anti-chafe, fuel, start time &mdash; the confidence anchor."),
+        ("Go/no-go decided from evidence (Week 13)",
+         any(d["week_no"] == 13 for d in decisions),
+         "Time goal, completion, or run-walk &mdash; chosen from data in Week 13, never on race morning."),
+    ]
+
+    done = sum(1 for _, ok, _ in items if ok)
+    lis = []
+    for label, ok, why in items:
+        mark = "&#10003;" if ok else "&#9711;"
+        cls = "" if ok else " style='color:var(--color-ink-faint);'"
+        lis.append(
+            f"        <li{cls}><span class='mono'>{mark}</span> {label}"
+            f"<br><span class='text-small' style='color:var(--color-ink-faint);'>{why}</span></li>"
+        )
+    return (
+        f'      <p class="section__intro"><strong>{done} of {len(items)} proven.</strong> Each item\n'
+        "      is a named rehearsal from the plan that either happened or didn't &mdash; a count,\n"
+        "      not a score. Nothing new on race day means every one of these must be ticked\n"
+        "      before 4 December.</p>\n"
+        '      <ul style="list-style:none;padding-left:0;line-height:1.5;">\n'
+        + "\n".join(lis) + "\n      </ul>"
     )
 
 
@@ -931,6 +1077,7 @@ def main() -> None:
     decisions = fetch("export_weekly_decisions", "order=week_no")
     statuses = fetch("export_daily_status", "order=day")
     load = fetch("export_weekly_load", "order=week_no")
+    fuel = fetch("export_fuel_rehearsals", "order=day")
     weeks = [
         {
             "week_no": w["week_no"],
@@ -954,6 +1101,8 @@ def main() -> None:
     html = replace_region(html, "stat-strip", build_stat_strip(weeks, runs, today), DASHBOARD)
     html = replace_region(html, "mileage", build_mileage(weeks, pre_plan_km(weeks, runs)), DASHBOARD)
     html = replace_region(html, "sessions", build_sessions_table(sessions, runs, today, cur), DASHBOARD)
+    html = replace_region(html, "ladder", build_ladder(sessions, runs, weeks, today), DASHBOARD)
+    html = replace_region(html, "readiness", build_readiness(runs, fuel, decisions, weeks), DASHBOARD)
     html = replace_region(html, "load", build_load_table(load, runs, weeks, today), DASHBOARD)
     html = replace_region(html, "status-history", build_status_history(statuses, today), DASHBOARD)
     DASHBOARD.write_text(html)
