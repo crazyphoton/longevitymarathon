@@ -127,9 +127,10 @@ or to catch anything new. The plan's rules currently implement the second view.
 Each disagreement rests on something unmeasured: an unexamined leg or an
 unknowable November. The measurable questions were settled today.
 
-## The doctor's review
+## Dr. Reddy's review
 
-The project's doctor reviewed the training history and current state the same
+Dr. Varun Reddy, the project's sports-medicine collaborator, reviewed the
+training history and current state the same
 day. He reviewed independently and did not read the AI review, so the comparison
 in the next section is the author's, not his. His comments, paraphrased:
 
@@ -157,16 +158,16 @@ The "40 km in seven days" is a rolling window, not a calendar week: the seven
 days ending August 19 total about 43 km, which is worse than the 30.8 km
 calendar-week figure the AI reviewers saw.
 
-### The doctor compared with the AI panel
+### Dr. Reddy compared with the AI panel
 
 **Where they agree.** The core diagnosis is identical: the ramp was too sharp,
 tissue risk outranks cardiovascular risk, the zone 2 runs are too fast, flat
-routes for now, and see a podiatrist. The doctor's 20–30 km target lands inside
+routes for now, and see a podiatrist. Dr. Reddy's 20–30 km target lands inside
 the AI range (the coach's 60–70% is about 18–22 km; the podiatrist's hold-at-
-Week-1 is about 31 km). The doctor also rejects the same comfort the athlete was
+Week-1 is about 31 km). He also rejects the same comfort the athlete was
 taking: slow doesn't make volume safe.
 
-**What the doctor added that all three AIs missed.**
+**What Dr. Reddy added that all three AIs missed.**
 
 - Hip and core strength. The AI reviewers prescribed calf and foot work only.
   Hip strength is standard care for exactly the knee pattern in the notes, and
@@ -181,22 +182,22 @@ taking: slow doesn't make volume safe.
 
 **Where the emphasis differs.**
 
-- The AI panel treated intensity as a first-order failure. The doctor agrees the
+- The AI panel treated intensity as a first-order failure. Dr. Reddy agrees the
   runs are too fast but frames speed as a later problem: the cardiovascular
   system isn't at risk, so pace matters mainly through impact load, and it can
   be tuned after the tissue settles.
 - The AI podiatrist emphasized loading ("stretching alone does not build tendon
-  capacity"). The doctor's protocol turns out to include loading: drop heel
+  capacity"). Dr. Reddy's protocol turns out to include loading: drop heel
   raises are "specifically a loading stretch". That narrows the gap — but it
   also sharpens one real conflict, because the AI podiatrist specifically
   advised against drop (deficit) work while the heel is reactive. This is now
   the clearest single question for the in-person podiatrist.
-- Set against the panel's severity dispute, the doctor's position lands in the
+- Set against the panel's severity dispute, Dr. Reddy's position lands in the
   middle: no formal circuit-breaker alarm, no all-clear — a concrete volume band
   instead.
 - The rebuild is steeper than the AI trajectory. The AI reviewers responded to
   the symptoms by holding volume and sliding the build phase later, which lowers
-  the achievable peak. The doctor prescribes 15% per week to a 50 km peak — just
+  the achievable peak. Dr. Reddy prescribes 15% per week to a 50 km peak — just
   under the plan's written 54 km, on a faster path than the AI reviewers
   proposed. The 15% rate also exceeds the traditional 10% guideline.
   Implemented as plan v4 on August 19: the week-by-week targets now follow this

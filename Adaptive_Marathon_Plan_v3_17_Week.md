@@ -16,8 +16,8 @@ A 17-week, decision-led system for progressing duration, preserving consistency,
 
 Status: detailed working framework for runner, coach, doctor, physiotherapist, or podiatrist review. It is not a diagnosis, medical clearance, or substitute for individualized clinical advice.
 
-> **Doctor's comment — 19 August 2026.** The project's doctor reviewed the athlete's
-> training history and current state independently (he did not read this document's
+> **Dr. Varun Reddy's comment — 19 August 2026.** Dr. Reddy (the project's sports-medicine
+> collaborator) reviewed the athlete's training history and current state independently (he did not read this document's
 > AI-derived revisions). His prescription differs from the table above:
 >
 > - The starting-envelope assumption is wrong in practice: two idle weeks followed by
@@ -40,7 +40,7 @@ Status: detailed working framework for runner, coach, doctor, physiotherapist, o
 
 ## The v4 ramp (effective 19 August 2026)
 
-The doctor's prescription is implemented as plan v4. The gates (§9), time caps,
+Dr. Reddy's prescription is implemented as plan v4. The gates (§9), time caps,
 strength framework (§10, refocused to hip/core/calf/knee), and fueling ladder
 (§11) carry over from v3 unchanged. The weekly volume schedule becomes:
 
