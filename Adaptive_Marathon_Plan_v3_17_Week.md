@@ -31,11 +31,43 @@ Status: detailed working framework for runner, coach, doctor, physiotherapist, o
 >   later concern; adjust it after the tissue settles. Zone 2 runs are currently too
 >   fast. Be prepared for boredom.
 > - Strength (second priority): hip and core training, dedicated calf and knee work.
->   Ignore upper body.
+>   Ignore upper body. On calf work: "As for calf loading the drop heel raises are
+>   specifically a loading stretch."
 > - Daily stretching: towel stretch, toe extension, calf stretch on a step, calf
 >   stretch against a wall.
 > - Book a podiatrist assessment. Run only on flat surfaces (author's documented
 >   deviation: park connectors are kept; slopes are walked, not run).
+
+## The v4 ramp (effective 19 August 2026)
+
+The doctor's prescription is implemented as plan v4. The gates (§9), time caps,
+strength framework (§10, refocused to hip/core/calf/knee), and fueling ladder
+(§11) carry over from v3 unchanged. The weekly volume schedule becomes:
+
+| Week | Phase | Starts | Target | Long run | Notes |
+|---|---|---|---|---|---|
+| 1 | Stabilize | Aug 10 | 31 km (as run) | 12.4 km | Retroactive. |
+| 2 | Stabilize | Aug 17 | 20 km | 12 km (as run) | Doctor-advised reduce week (20–30 band). |
+| 3 | Build | Aug 24 | 23 km | 12 km | 15% ramp begins. |
+| 4 | Build | Aug 31 | 26 km | 13 km | |
+| 5 | Build | Sep 7 | 30 km | 15 km | |
+| 6 | Build | Sep 14 | 35 km | 17 km | Fuel/fluid rehearsal; sweat-rate test. |
+| 7 | Build | Sep 21 | 40 km | 20 km | Midweek MLR begins. |
+| 8 | Build | Sep 28 | 46 km | 23 km | |
+| 9 | Peak | Oct 5 | 50 km | 26 km | Minimum viable peak: fueled ≥26 km. |
+| 10 | Peak | Oct 12 | 50 km | 27 km | |
+| 11 | Tune-up | Oct 19 | 43 km | 21.1 km | Half-marathon tune-up. |
+| 12 | Descend | Oct 26 | 38 km | 18 km | 2×3 km at marathon effort in the long run. |
+| 13 | Descend | Nov 2 | 33 km | 16 km | Go/no-go. MVP deadline (unified at Week 13). |
+| 14 | Descend | Nov 9 | 28 km | 14 km | Dress rehearsal at reduced volume. |
+| 15 | Taper | Nov 16 | 24 km | 12 km | |
+| 16 | Taper | Nov 23 | 20 km | 10 km | |
+| 17 | Race week | Nov 30 | 15 km | — | Race Fri Dec 4. |
+
+No strides while the heel issue is active. Under this schedule the fueled
+≥26 km long run lands in Weeks 9–10 — the only weeks where it fits the ≤55%
+long-run share rule — which also resolves the Week 13 (rules) versus Week 14
+(§6) deadline inconsistency in favor of Week 13.
 
 ## What changed in v3 (and why)
 

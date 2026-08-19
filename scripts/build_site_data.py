@@ -90,7 +90,7 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
     elif done >= len(weeks):
         weeks_note = f"All {total} weeks complete."
     else:
-        weeks_note = "Plan v3 began Mon 10 Aug."
+        weeks_note = "Plan v4; Week 1 began Mon 10 Aug."
     weeks_stat = stat(
         "Weeks completed", f"{done} <span class='stat__value--muted'>/ {total}</span>", weeks_note
     )
@@ -125,7 +125,7 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
         longest_stat = stat(
             "Longest run so far",
             f"{fmt(num(longest['distance_km']))} km &middot; {hm(num(longest.get('duration_s')))}",
-            f"{note}" + (f", Week {wk}." if wk else ". Plan v3 caps long runs by time, not just distance."),
+            f"{note}" + (f", Week {wk}." if wk else ". Plan v4 caps long runs by time, not just distance."),
         )
     else:
         longest_stat = stat(
@@ -143,13 +143,13 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
         feet_stat = stat(
             "Time on feet this week",
             hm(sum(num(r.get("duration_s")) for r in week_runs)),
-            "Duration is the primary lever in plan v3; distance is context.",
+            "Duration is the primary lever in plan v4; distance is context.",
         )
     else:
         feet_stat = stat(
             "Time on feet this week",
             "&mdash;",
-            "Duration is the primary lever in plan v3; distance is context.",
+            "Duration is the primary lever in plan v4; distance is context.",
             "stat__value mono stat__value--muted",
         )
 
@@ -166,7 +166,7 @@ def build_stat_strip(weeks: list[dict], runs: list[dict], today: dt.date) -> str
 
 
 def pre_plan_km(weeks: list[dict], runs: list[dict]) -> float:
-    """Approved kilometres run before v3 Week 1 (the 10–16 Aug v2 week)."""
+    """Approved kilometres run before Week 1 (the pre-plan weeks)."""
     start = min(w["start"] for w in weeks)
     return sum(num(r["distance_km"]) for r in runs if dt.date.fromisoformat(r["run_date"]) < start)
 
@@ -244,7 +244,7 @@ def build_mileage(weeks: list[dict], pre_km: float = 0.0) -> str:
     if any_actual:
         heading = f"      <h3>Planned vs. actual weekly mileage, all {total} weeks</h3>"
         intro = (
-            '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v3 targets with\n'
+            '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v4 targets with\n'
             "      actual mileage layered on as the dark inner bar. Actuals count approved, published\n"
             "      runs only, so a week can briefly show less than was really run. Week 1 was adopted\n"
             "      retroactively &mdash; run 10&ndash;16 Aug, before the v3 document existed.</p>"
@@ -252,14 +252,14 @@ def build_mileage(weeks: list[dict], pre_km: float = 0.0) -> str:
     else:
         heading = f"      <h3>Planned weekly mileage, all {total} weeks</h3>"
         intro = (
-            '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v3 targets, shown ahead\n'
+            '      <p class="text-small" style="color:var(--color-ink-faint);">Plan v4 targets, shown ahead\n'
             "      of any actual training. As weeks complete, actual mileage will be layered onto this same\n"
             "      chart rather than replacing it.</p>"
         )
 
     chart = '      <div class="barchart"><div class="barchart__rows">' + "".join(rows) + "</div>" + legend + "</div>"
     link = (
-        '      <p class="text-small"><a href="/plan/versions/v3-current/">'
+        '      <p class="text-small"><a href="/plan/versions/v4-current/">'
         "Full week-by-week table &amp; text equivalent &rarr;</a></p>"
     )
     parts = [heading, intro, chart]
@@ -423,8 +423,8 @@ def build_ladder(sessions: list[dict], runs: list[dict], weeks: list[dict], toda
         best_note = (
             f'      <p class="text-small" style="color:var(--color-ink-faint);">Longest so far:\n'
             f"      {hm(best_so_far)} &mdash; {pct_of_race}% of the five-hour race target. The ladder\n"
-            "      tops out at 3:15&ndash;3:30 in Week 14, about 70%, by design: the remaining distance\n"
-            "      is what the taper, the fueling, and conservative pacing are for. &#9733; marks a\n"
+            "      tops out at 3:15&ndash;3:20 in the Week 9&ndash;10 peak, about 65&ndash;70%, by design: the remaining\n"
+            "      distance is what the descent, the fueling, and conservative pacing are for. &#9733; marks a\n"
             "      longest-ever run.</p>"
         )
     return ('      <div class="barchart"><div class="barchart__rows">'
@@ -457,24 +457,24 @@ def build_readiness(runs: list[dict], fuel: list[dict], decisions: list[dict],
          any(num(f["fuel_g_per_h"]) >= 30 and num(f["minutes"]) >= 75 for f in fuel),
          "Gut training starts in Week 3; the gut is trainable and race-day fueling must be, too."),
         ("Long run &ge; 2:30", longest_min >= 150,
-         "Time on feet is the durability currency; 2:30 arrives around Week 8."),
+         "Time on feet is the durability currency; 2:30 arrives around Week 7."),
         ("Long run &ge; 3:00", longest_min >= 180,
-         "The deep-durability zone; roughly Week 10 onward."),
+         "The deep-durability zone; the Week 9&ndash;10 peak."),
         ("&ge;50 g/h held on a long run",
          any(num(f["fuel_g_per_h"]) >= 50 and num(f["minutes"]) >= 90 for f in fuel),
-         "The Week 10&ndash;11 fueling step."),
+         "The Week 9 fueling step."),
         ("&ge;60 g/h held, gut untroubled",
          any(num(f["fuel_g_per_h"]) >= 60 and f["gi_ok"] and num(f["minutes"]) >= 90 for f in fuel),
          "The race dose for a five-hour finisher &mdash; 30 g/h is bonk management, not race fueling."),
         ("Half-marathon tune-up raced (Week 11)", ran_on(hm_day, 18),
          "The only pacing evidence that predates race day; it sets the marathon pacing plan."),
-        ("Marathon-effort blocks inside a long run (Week 12)", ran_on(mp_day, 22),
+        ("Marathon-effort blocks inside a long run (Week 12)", ran_on(mp_day, 16),
          "Race pace has to be calibrated at race intensity &mdash; and the gut tested at that intensity."),
         ("Fueled long run &ge; 26 km &mdash; the minimum viable peak",
          any(km_by_date.get(f["day"], 0) >= 26 for f in fuel),
-         "The plan's anti-under-training guard: without one of these by Week 14, the go/no-go must formally re-scope the goal."),
-        ("Dress rehearsal completed (Week 14)", ran_on(dress_day, 24),
-         "Race breakfast, kit, anti-chafe, fuel, start time &mdash; the confidence anchor."),
+         "The plan's anti-under-training guard, expected in the Week 9&ndash;10 peak: without one by Week 13, the go/no-go must formally re-scope the goal."),
+        ("Dress rehearsal completed (Week 14)", ran_on(dress_day, 12),
+         "Race breakfast, kit, anti-chafe, fuel, start time &mdash; at reduced volume under v4."),
         ("Go/no-go decided from evidence (Week 13)",
          any(d["week_no"] == 13 for d in decisions),
          "Time goal, completion, or run-walk &mdash; chosen from data in Week 13, never on race morning."),
@@ -549,7 +549,7 @@ def build_load_table(load: list[dict], runs: list[dict], weeks: list[dict], toda
             "      plan v3 weeks start completing.</p>"
         )
     intro = (
-        '      <p class="section__intro">Plan v3 is duration-led: the marathon is a\n'
+        '      <p class="section__intro">Plan v4 is duration-led: the marathon is a\n'
         "      time-on-feet problem, so minutes and long-run share are the primary exposure\n"
         "      readouts and distance is context. Session-RPE load (effort &times; minutes,\n"
         "      summed for the week) is the internal-load backbone &mdash; it survives heat,\n"
@@ -622,7 +622,7 @@ def build_zones(zone_runs: list[dict]) -> str:
     intro = (
         '      <p class="section__intro">Each bar is one run on a shared duration scale, split by\n'
         "      where the heart rate actually spent its time &mdash; Garmin's zones, minutes hidden in\n"
-        "      the hover. Plan v3 wants nearly everything in the teal half; rust is the honest\n"
+        "      the hover. Plan v4 wants nearly everything in the teal half; rust is the honest\n"
         "      measure of how often a run drifted above easy. Zone boundaries are calibrated\n"
         "      against an earlier VO&#8322; max test; heart rate is currently wrist-optical, which is\n"
         "      noisy beat-to-beat but reliable for time-in-zone totals like these.</p>"
@@ -647,7 +647,7 @@ def build_plan_chart(weeks: list[dict], pre_km: float = 0.0) -> str:
 def build_decisions(decisions: list[dict], weeks: list[dict]) -> str:
     if not decisions:
         return (
-            '      <p class="section__intro">No weekly decisions recorded yet under plan v3.\n'
+            '      <p class="section__intro">No weekly decisions recorded yet under the current plan.\n'
             "      One entry lands here at the end of every training week: the status call, the\n"
             "      single lever changed (or held), and the one-sentence rationale &mdash; including\n"
             "      the boring weeks where the decision is simply &ldquo;proceed&rdquo;.</p>"
@@ -686,7 +686,7 @@ def build_status_history(statuses: list[dict], today: dt.date) -> str:
     if not recent:
         return (
             '      <p class="section__intro">Daily green/amber/red gate statuses will appear here\n'
-            "      once the plan v3 control loop has data. Statuses are computed from the same rules\n"
+            "      once the adaptive control loop has data. Statuses are computed from the same rules\n"
             "      the training decisions use; symptom detail stays private.</p>"
         )
     cells = []
@@ -716,13 +716,13 @@ def build_home_glance(weeks: list[dict], today: dt.date) -> str:
     total = len(weeks)
     if cur:
         status_value = f"Week {cur['week_no']} of {total}"
-        status_note = f"{escape(cur['phase'])} phase &middot; plan v3, Week 1 from 10 Aug 2026"
+        status_note = f"{escape(cur['phase'])} phase &middot; plan v4, Week 1 from 10 Aug 2026"
     elif done >= len(weeks):
         status_value = "Complete"
         status_note = f"All {total} weeks done &middot; training started 10 Aug 2026"
     else:
         status_value = f"Week 0 of {total}"
-        status_note = "Plan v3 runs from Mon 10 Aug 2026; the project began 1 Aug"
+        status_note = "Plan v4 runs from Mon 10 Aug 2026; the project began 1 Aug"
 
     parts = [
         stat(

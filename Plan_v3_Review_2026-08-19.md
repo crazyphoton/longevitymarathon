@@ -143,7 +143,8 @@ in the next section is the author's, not his. His comments, paraphrased:
   the risk of cardiovascular injury. The cardiovascular system is not the
   constraint, so speed can be adjusted later. Don't worry about speed now.
 - **Strength work, second priority:** hip and core training, plus dedicated calf
-  and knee work. Ignore upper body.
+  and knee work. Ignore upper body. On calf work, in his words: "As for calf
+  loading the drop heel raises are specifically a loading stretch."
 - **Pace:** the zone 2 runs are too fast. Be prepared for boredom.
 - **Book a podiatrist assessment.**
 - **Stretch every day:** towel stretch, toe extension, calf stretch on a step,
@@ -185,10 +186,11 @@ taking: slow doesn't make volume safe.
   system isn't at risk, so pace matters mainly through impact load, and it can
   be tuned after the tissue settles.
 - The AI podiatrist emphasized loading ("stretching alone does not build tendon
-  capacity") and cautioned against aggressive stretching while reactive. The
-  doctor prescribes daily stretching as a pillar. These are compatible — stretch
-  daily and build calf capacity — but the emphasis is different, and it's a
-  reasonable question for the in-person podiatrist.
+  capacity"). The doctor's protocol turns out to include loading: drop heel
+  raises are "specifically a loading stretch". That narrows the gap — but it
+  also sharpens one real conflict, because the AI podiatrist specifically
+  advised against drop (deficit) work while the heel is reactive. This is now
+  the clearest single question for the in-person podiatrist.
 - Set against the panel's severity dispute, the doctor's position lands in the
   middle: no formal circuit-breaker alarm, no all-clear — a concrete volume band
   instead.
@@ -197,6 +199,9 @@ taking: slow doesn't make volume safe.
   the achievable peak. The doctor prescribes 15% per week to a 50 km peak — just
   under the plan's written 54 km, on a faster path than the AI reviewers
   proposed. The 15% rate also exceeds the traditional 10% guideline.
+  Implemented as plan v4 on August 19: the week-by-week targets now follow this
+  ramp, with the peak held in Weeks 9–10 and a descent through the fixed
+  landmarks to race day.
 - His review doesn't address the race-goal arithmetic. Whether 26 km by Week 14
   is achievable stays open, and the Week 11 tune-up remains the decision point.
 
