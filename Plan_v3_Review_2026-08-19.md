@@ -63,10 +63,10 @@ happened. The question is how much of 30 km per week the heel can keep.
 The gate system is well designed, but on August 19 it described an athlete that
 doesn't exist. The thresholds are fine. The data never reached them.
 
-1. **The gates ran without symptom data.** Check-ins went to Notion, but the gate
-   engine reads Supabase. The `checkin` table was empty until August 19. The site
-   showed green for August 15 — the skipped-run day — and recorded one amber for
-   the whole week.
+1. **The gates ran without symptom data.** Daily notes went into a personal
+   notebook that the gate engine can't read, so the engine saw no symptoms at
+   all until the notes were imported on August 19. The site showed green for
+   August 15 — the skipped-run day — and recorded one amber for the whole week.
 2. **The circuit breaker couldn't fire.** The breaker needs three amber days in a
    week. Four active issues produced one recorded amber, so the mechanism built
    for this situation couldn't see it.
@@ -76,9 +76,9 @@ doesn't exist. The thresholds are fine. The data never reached them.
 4. **Nothing checks intensity.** The notes say "zone 2, capped at 150". The watch
    shows 78–99% of time above zone 2 in every run before August 16. The 80/20
    split is enforced only by self-perception.
-5. **The spec and the code disagree.** The SQL sets the minimum viable long run at
-   week 13. The document says week 14. The dashboard also still says "no
-   injuries" while the issue register holds four.
+5. **The plan and its automation disagree.** The automated rules require the
+   minimum viable long run by week 13. The plan document says week 14. The
+   dashboard also still says "no injuries" while the issue register holds four.
 6. **Self-reports drift.** The July 26 note says 12.5 km; Garmin recorded 14.2 km.
    Apply the same skepticism to the pain scores.
 
@@ -136,7 +136,7 @@ unknowable November. The measurable questions were settled today.
    tissue amber, and no overriding a pre-run amber.
 4. Fix the week 13/14 inconsistency. Correct the dashboard's "no injuries" text.
 5. Recharge the chest strap.
-6. Defer two decisions, with criteria recorded as a `weekly_decision`: whether
+6. Defer two decisions, with criteria recorded in the weekly decision log: whether
    the 26 km target becomes time-based (decide after the Week 11 tune-up), and
    whether to run the formal §9 review now. Because the breaker couldn't have
    fired even when deserved, running the review voluntarily is the conservative
