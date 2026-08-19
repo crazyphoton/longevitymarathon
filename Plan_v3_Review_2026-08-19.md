@@ -129,11 +129,16 @@ unknowable November. The measurable questions were settled today.
 
 ## The doctor's review
 
-After the AI review was written, the project's doctor reviewed the plan and the
-current state. His comments, paraphrased:
+The project's doctor reviewed the training history and current state the same
+day. He reviewed independently and did not read the AI review, so the comparison
+in the next section is the author's, not his. His comments, paraphrased:
 
 - **Ramp:** two weeks of no running, then about 40 km in seven days. Not optimal
   even at slow paces. Fall back to 20–30 km per week.
+- **Rebuild:** ramp from 20 km per week at 15% per week to a peak of 50 km per
+  week — about 20, 23, 26, 30, 35, 40, 46, 50 — reaching the peak around
+  mid-October if nothing interrupts. The plan's written 54 km peak is not a
+  target.
 - **Focus on biomechanics.** The risk of biomechanical injury is much higher than
   the risk of cardiovascular injury. The cardiovascular system is not the
   constraint, so speed can be adjusted later. Don't worry about speed now.
@@ -184,9 +189,15 @@ taking: slow doesn't make volume safe.
   doctor prescribes daily stretching as a pillar. These are compatible — stretch
   daily and build calf capacity — but the emphasis is different, and it's a
   reasonable question for the in-person podiatrist.
-- The doctor arbitrates the panel's severity dispute from the middle: no formal
-  circuit-breaker alarm, no all-clear — a concrete volume band instead.
-- The doctor did not engage the race-goal arithmetic. Whether 26 km by Week 14
+- Set against the panel's severity dispute, the doctor's position lands in the
+  middle: no formal circuit-breaker alarm, no all-clear — a concrete volume band
+  instead.
+- The rebuild is steeper than the AI trajectory. The AI reviewers responded to
+  the symptoms by holding volume and sliding the build phase later, which lowers
+  the achievable peak. The doctor prescribes 15% per week to a 50 km peak — just
+  under the plan's written 54 km, on a faster path than the AI reviewers
+  proposed. The 15% rate also exceeds the traditional 10% guideline.
+- His review doesn't address the race-goal arithmetic. Whether 26 km by Week 14
   is achievable stays open, and the Week 11 tune-up remains the decision point.
 
 ## Recommended actions

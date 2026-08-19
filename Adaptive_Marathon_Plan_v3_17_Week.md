@@ -16,6 +16,27 @@ A 17-week, decision-led system for progressing duration, preserving consistency,
 
 Status: detailed working framework for runner, coach, doctor, physiotherapist, or podiatrist review. It is not a diagnosis, medical clearance, or substitute for individualized clinical advice.
 
+> **Doctor's comment — 19 August 2026.** The project's doctor reviewed the athlete's
+> training history and current state independently (he did not read this document's
+> AI-derived revisions). His prescription differs from the table above:
+>
+> - The starting-envelope assumption is wrong in practice: two idle weeks followed by
+>   ~40 km in seven days was too sharp a ramp, even at easy pace. Fall back to
+>   20–30 km/week now.
+> - Rebuild from **20 km/week at +15% per week to a peak of 50 km/week**
+>   (approximately 20 → 23 → 26 → 30 → 35 → 40 → 46 → 50, reaching peak around
+>   mid-October if uninterrupted). This replaces the ramp implied by §8 for the
+>   remaining weeks; the 54 km written peak is not a target.
+> - Biomechanical injury risk is much higher than cardiovascular risk. Speed is a
+>   later concern; adjust it after the tissue settles. Zone 2 runs are currently too
+>   fast. Be prepared for boredom.
+> - Strength (second priority): hip and core training, dedicated calf and knee work.
+>   Ignore upper body.
+> - Daily stretching: towel stretch, toe extension, calf stretch on a step, calf
+>   stretch against a wall.
+> - Book a podiatrist assessment. Run only on flat surfaces (author's documented
+>   deviation: park connectors are kept; slopes are walked, not run).
+
 ## What changed in v3 (and why)
 
 v3 incorporates an exercise-physiology review and a coaching review of v2. The philosophy is unchanged; the corrections are:
