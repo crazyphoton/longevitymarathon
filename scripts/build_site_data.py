@@ -566,6 +566,74 @@ def build_load_table(load: list[dict], runs: list[dict], weeks: list[dict], toda
     )
 
 
+ZONE_COLORS = ["#9fb8b0", "#3e6e64", "#c08a52", "#97552f", "#701f14"]
+ZONE_KEYS = ["z1_s", "z2_s", "z3_s", "z4_s", "z5_s"]
+MAX_ZONE_ROWS = 14
+
+
+def build_zones(zone_runs: list[dict]) -> str:
+    """Per-run time-in-HR-zone stacked bars. Two color poles split at the
+    Z2/Z3 boundary — teal for at-or-below easy (the plan's lane), rust for
+    above it — with lightness ordering the zones inside each pole. Bars share
+    one duration scale so a long run reads longer than a short one."""
+    rows_src = sorted(zone_runs, key=lambda r: r["run_date"])[-MAX_ZONE_ROWS:]
+    if not rows_src:
+        return (
+            '      <p class="section__intro">Per-run heart-rate zone distribution will appear\n'
+            "      here once runs with zone data are ingested.</p>"
+        )
+    max_total = max(sum(num(r[k]) for k in ZONE_KEYS) for r in rows_src)
+    rows = []
+    for r in rows_src:
+        zs = [num(r[k]) for k in ZONE_KEYS]
+        total = sum(zs)
+        if not total:
+            continue
+        segs = []
+        for i, secs in enumerate(zs):
+            if secs < 30:  # sub-30 s slivers render as invisible crumbs
+                continue
+            pct_run = round(secs / total * 100)
+            width = secs / max_total * 100
+            segs.append(
+                f'<span title="Z{i + 1} &middot; {round(secs / 60)} min ({pct_run}%)" '
+                f'style="display:block;height:100%;width:{width:.1f}%;'
+                f'background:{ZONE_COLORS[i]};border-radius:2px"></span>'
+            )
+        above = sum(zs[2:]) / total * 100
+        day = dt.date.fromisoformat(r["run_date"])
+        rows.append(
+            '<div class="barchart__row">\n'
+            f'          <span class="barchart__label">{d_short(day)}</span>\n'
+            f'          <span class="barchart__track" style="display:flex;gap:2px;background:none">'
+            + "".join(segs) + "</span>\n"
+            f'          <span class="barchart__val">{hm(num(r["duration_s"]))} &middot; {round(above)}% above easy</span>\n'
+            "        </div>"
+        )
+    legend = (
+        '<div class="barchart__legend">'
+        + "".join(
+            f'<span><span class="legend-swatch" style="background:{ZONE_COLORS[i]}"></span>Z{i + 1}</span>'
+            for i in range(5)
+        )
+        + '<span style="color:var(--color-ink-faint);">teal = at or below easy (Z1&ndash;Z2) &middot; rust = above (Z3&ndash;Z5)</span>'
+        "</div>"
+    )
+    intro = (
+        '      <p class="section__intro">Each bar is one run on a shared duration scale, split by\n'
+        "      where the heart rate actually spent its time &mdash; Garmin's zones, minutes hidden in\n"
+        "      the hover. Plan v3 wants nearly everything in the teal half; rust is the honest\n"
+        "      measure of how often a run drifted above easy. Zone boundaries are the watch's\n"
+        "      configured ones &mdash; themselves an assumption under review, not ground truth.</p>"
+    )
+    return (
+        intro
+        + '\n      <div class="barchart"><div class="barchart__rows">'
+        + "".join(rows)
+        + "</div>" + legend + "</div>"
+    )
+
+
 def build_plan_chart(weeks: list[dict], pre_km: float = 0.0) -> str:
     max_target = max(w["target_km"] for w in weeks)
     rows = [pre_plan_row(pre_km, max_target)] if pre_km > 0 else []
@@ -1078,6 +1146,7 @@ def main() -> None:
     statuses = fetch("export_daily_status", "order=day")
     load = fetch("export_weekly_load", "order=week_no")
     fuel = fetch("export_fuel_rehearsals", "order=day")
+    zone_runs = fetch("export_run_zones", "order=run_date")
     weeks = [
         {
             "week_no": w["week_no"],
@@ -1104,6 +1173,7 @@ def main() -> None:
     html = replace_region(html, "ladder", build_ladder(sessions, runs, weeks, today), DASHBOARD)
     html = replace_region(html, "readiness", build_readiness(runs, fuel, decisions, weeks), DASHBOARD)
     html = replace_region(html, "load", build_load_table(load, runs, weeks, today), DASHBOARD)
+    html = replace_region(html, "zones", build_zones(zone_runs), DASHBOARD)
     html = replace_region(html, "status-history", build_status_history(statuses, today), DASHBOARD)
     DASHBOARD.write_text(html)
 
@@ -1151,6 +1221,7 @@ def main() -> None:
                 "decisions": decisions,
                 "statuses": statuses,
                 "load": load,
+                "zones": zone_runs,
             },
             indent=2,
         )
