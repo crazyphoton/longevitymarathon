@@ -623,8 +623,9 @@ def build_zones(zone_runs: list[dict]) -> str:
         '      <p class="section__intro">Each bar is one run on a shared duration scale, split by\n'
         "      where the heart rate actually spent its time &mdash; Garmin's zones, minutes hidden in\n"
         "      the hover. Plan v3 wants nearly everything in the teal half; rust is the honest\n"
-        "      measure of how often a run drifted above easy. Zone boundaries are the watch's\n"
-        "      configured ones &mdash; themselves an assumption under review, not ground truth.</p>"
+        "      measure of how often a run drifted above easy. Zone boundaries are calibrated\n"
+        "      against an earlier VO&#8322; max test; heart rate is currently wrist-optical, which is\n"
+        "      noisy beat-to-beat but reliable for time-in-zone totals like these.</p>"
     )
     return (
         intro

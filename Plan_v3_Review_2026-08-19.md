@@ -108,8 +108,11 @@ designed, but on 19 Aug it was describing a fictional athlete:
    Z2; the June–July singles averaged HR 159. Only 16 Aug (56% Z2) resembles an easy
    run. Nothing in the gate system gates on intensity discipline — the 80/20
    structure is enforced by nothing but self-perception, which the data shows was
-   off by a zone. (Caveat cutting the other way: Garmin's zone boundaries are
-   themselves unvalidated defaults — see §4, D2.)
+   off by a zone. (Author's clarification, 19 Aug: the zone boundaries are
+   calibrated against an earlier VO2max test and are to be treated as more or less
+   correct; current HR comes from the wrist optical sensor while the chest strap's
+   battery is dead. That removes the "maybe the zones are wrong" escape hatch —
+   the intensity finding stands.)
 5. **Spec drift inside the machine.** The SQL gate rule says minimum viable peak
    `by_week: 13`; the plan document says end of Week 14. One of them is wrong, and
    which one decides when the go/no-go fires.
@@ -153,17 +156,19 @@ it is, heat is permanent, injury course eats the improvement window); the
 physiologist assumes a normal training response (VO2max ~49 implies substantial
 headroom over 12 weeks once volume is consistent — current pace reflects heat, HR
 caps, and caution, not the aerobic ceiling). *Why uncertain — and this is the
-interesting one:* the zone data undermines **both** positions at once. If Garmin's
-boundaries are right, nearly all past running was tempo-intensity — meaning the
-aerobic base is thinner than VO2max suggests (coach's way), but also that genuinely
-easy consistent volume is an untried stimulus with unusually large expected gains
-(physiologist's way). And Garmin's boundaries may simply be wrong: they are derived
-from a default max-HR formula, unvalidated by any field test. The one cheap
-experiment that shrinks this uncertainty — checking the configured zones, then a
-single supervised threshold field test — is itself a training load that the heel
-currently argues against. Pace-at-Week-12 is unknowable from here; the honest move
-is the plan's own one: let the Week 11 half-marathon tune-up decide, and pre-commit
-to what result triggers which goal.
+interesting one:* the zone data undermines **both** positions at once. The author
+has since confirmed (19 Aug) that the zone boundaries are calibrated against an
+earlier VO2max test and should be treated as more or less correct (wrist optical
+sensor for now — chest strap battery dead — which adds noise to any single reading
+but little to multi-minute time-in-zone totals). Taking the zones as real: nearly
+all past running was tempo-intensity, so the aerobic base is thinner than VO2max
+suggests (coach's way) — but genuinely easy consistent volume is therefore an
+untried stimulus with unusually large expected gains (physiologist's way). The
+calibration being historical leaves modest drift possible, but the residual
+uncertainty is no longer about measurement; it is about training response.
+Pace-at-Week-12 is unknowable from here; the honest move is the plan's own one:
+let the Week 11 half-marathon tune-up decide, and pre-commit to what result
+triggers which goal.
 
 **D3. What actually failed on 19 Aug — the rule or the athlete?**
 Podiatrist: the rulebook missed the pattern (morning pain that warms up is
@@ -194,7 +199,8 @@ unmeasured — an unexamined leg, an unvalidated zone configuration, an unrecord
 amber history, an unknowable training response. None of it is resolvable by more
 argument. Three of the four (D1, D3, and the zone half of D2) are resolvable by
 cheap actions: capture symptoms where the engine reads them (done as of 19 Aug),
-verify the watch's zone settings, get the in-person exam. D2's core — what pace will
+verify the watch's zone settings (resolved 19 Aug: calibrated against an earlier
+VO2max test, per the author), get the in-person exam. D2's core — what pace will
 exist in November — is genuinely unknowable, which is why the plan's Week-11
 tune-up-then-decide mechanism, not any expert's forecast, is the right arbiter.
 
@@ -206,9 +212,11 @@ Cheap and consensus-backed, in order:
    reviewers).
 2. Hold Week 2–3 at or below Week 1's load; no strides; flat routes; substitute one
    run with bike/pool; begin daily calf/foot loading per §10.
-3. Verify Garmin's HR zone configuration against a known max-HR or threshold
-   estimate — one settings screen resolves the most load-bearing measurement
-   uncertainty in the system.
+3. ~~Verify Garmin's HR zone configuration~~ — resolved 19 Aug: boundaries are
+   calibrated against an earlier VO2max test (author). Residual: recharge/replace
+   the chest-strap battery — wrist optical is fine for time-in-zone but the strap
+   is better for any future threshold work — and note the calibration's age when
+   the next VO2max estimate lands.
 4. Add the morning-pain gate rule (podiatrist) *and* the pre-run no-negotiation
    rule (coach) — D3 doesn't need to be adjudicated to act.
 5. Fix the `min_viable_peak` week-13/14 inconsistency (SQL vs document).
