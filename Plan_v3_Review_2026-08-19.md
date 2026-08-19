@@ -127,6 +127,68 @@ or to catch anything new. The plan's rules currently implement the second view.
 Each disagreement rests on something unmeasured: an unexamined leg or an
 unknowable November. The measurable questions were settled today.
 
+## The doctor's review
+
+After the AI review was written, the project's doctor reviewed the plan and the
+current state. His comments, paraphrased:
+
+- **Ramp:** two weeks of no running, then about 40 km in seven days. Not optimal
+  even at slow paces. Fall back to 20–30 km per week.
+- **Focus on biomechanics.** The risk of biomechanical injury is much higher than
+  the risk of cardiovascular injury. The cardiovascular system is not the
+  constraint, so speed can be adjusted later. Don't worry about speed now.
+- **Strength work, second priority:** hip and core training, plus dedicated calf
+  and knee work. Ignore upper body.
+- **Pace:** the zone 2 runs are too fast. Be prepared for boredom.
+- **Book a podiatrist assessment.**
+- **Stretch every day:** towel stretch, toe extension, calf stretch on a step,
+  calf stretch against a wall.
+- **Run only on flat surfaces.** Author's note: I overrode this one. I don't like
+  tracks or treadmills, and I prefer park connectors. The compromise: I walk the
+  slopes instead of running them.
+
+The "40 km in seven days" is a rolling window, not a calendar week: the seven
+days ending August 19 total about 43 km, which is worse than the 30.8 km
+calendar-week figure the AI reviewers saw.
+
+### The doctor compared with the AI panel
+
+**Where they agree.** The core diagnosis is identical: the ramp was too sharp,
+tissue risk outranks cardiovascular risk, the zone 2 runs are too fast, flat
+routes for now, and see a podiatrist. The doctor's 20–30 km target lands inside
+the AI range (the coach's 60–70% is about 18–22 km; the podiatrist's hold-at-
+Week-1 is about 31 km). The doctor also rejects the same comfort the athlete was
+taking: slow doesn't make volume safe.
+
+**What the doctor added that all three AIs missed.**
+
+- Hip and core strength. The AI reviewers prescribed calf and foot work only.
+  Hip strength is standard care for exactly the knee pattern in the notes, and
+  none of the three personas mentioned it.
+- Dedicated knee work, and explicit de-prioritization: ignore upper body.
+- A concrete daily stretching protocol (towel, toe extension, calf on step, calf
+  on wall) — the classic plantar fascia and Achilles program, matched to the
+  heel's morning-pain pattern.
+- "Be prepared for boredom." None of the AIs addressed the adherence psychology
+  of genuinely easy running, which is the thing most likely to break the pace
+  discipline in practice.
+
+**Where the emphasis differs.**
+
+- The AI panel treated intensity as a first-order failure. The doctor agrees the
+  runs are too fast but frames speed as a later problem: the cardiovascular
+  system isn't at risk, so pace matters mainly through impact load, and it can
+  be tuned after the tissue settles.
+- The AI podiatrist emphasized loading ("stretching alone does not build tendon
+  capacity") and cautioned against aggressive stretching while reactive. The
+  doctor prescribes daily stretching as a pillar. These are compatible — stretch
+  daily and build calf capacity — but the emphasis is different, and it's a
+  reasonable question for the in-person podiatrist.
+- The doctor arbitrates the panel's severity dispute from the middle: no formal
+  circuit-breaker alarm, no all-clear — a concrete volume band instead.
+- The doctor did not engage the race-goal arithmetic. Whether 26 km by Week 14
+  is achievable stays open, and the Week 11 tune-up remains the decision point.
+
 ## Recommended actions
 
 1. Book a podiatrist or physiotherapist this week.
